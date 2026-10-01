@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mindset IA: Entre em Fluxo</title>
+<meta name="description" content="O sistema com IA que coloca sua rotina, seus hábitos e suas metas em Fluxo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+
+  :root{
+    --bg: #07090b;
+    --card: #10141a;
+    --card-2: #131a23;
+    --card-light: #eef4f5;
+    --border: #232c34;
+    --fg: #e7eef0;
+    --muted: #93a5a9;
+    --primary: #ffffff;
+    --primary-light: #ffffff;
+    --primary-dark: #c9cdd2;
+    --danger: #e5484d;
+    --danger-bg: #2a1417;
+    --success: #3ddc97;
+    --amber: #e8b74a;
+    --amber-bg: #241d10;
+    --gradient-flow: linear-gradient(135deg, #f4f6f7 0%, #ffffff 45%, var(--primary-dark) 100%);
+    --shadow-card: 0 18px 60px -24px rgba(0,0,0,0.75);
+    --shadow-glow: 0 0 40px -8px rgba(255,255,255,0.35);
+    --radius: 1.1rem;
+    --radius-sm: 0.7rem;
+    --font-display: "Playfair Display", Georgia, serif;
+    --font-body: "Inter", -apple-system, sans-serif;
+    --font-data: "Space Grotesk", "Inter", sans-serif;
+    --ease: cubic-bezier(.22,.9,.32,1);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; position:relative;
+    min-height:100vh; min-height:100dvh;
+    background:
+      radial-gradient(ellipse 90% 55% at 50% -10%, rgba(255,255,255,0.10), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 90% 100%, rgba(255,255,255,0.06), transparent 60%),
+      var(--bg);
+    color:var(--fg); font-family:var(--font-body); font-size:16px; line-height:1.55;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  /* grade de fundo, presente em todas as etapas */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size:38px 38px;
+    -webkit-mask-image:radial-gradient(ellipse 85% 70% at 50% 30%, black 35%, transparent 92%);
+    mask-image:radial-gradient(ellipse 85% 70% at 50% 30%, black 35%, transparent 92%);
+    animation:gridDrift 30s linear infinite;
+  }
+  @keyframes gridDrift{0%{background-position:0 0,0 0}100%{background-position:38px 38px,38px 38px}}
+
+  h1,h2,h3{font-family:var(--font-display); margin:0 0 .5em; font-weight:700; letter-spacing:-0.01em}
+  p{margin:0 0 1em}
+  .num,.stat,.price,.timer{font-family:var(--font-data)}
+  button{font-family:inherit}
+  ::selection{background:var(--primary); color:#03181a}
+  a{color:var(--primary)}
+  :focus-visible{outline:2px solid var(--primary); outline-offset:3px; border-radius:4px}
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:.5em; font-family:var(--font-data); font-size:.75rem;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--primary-light);
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.25); padding:.4em .9em; border-radius:99px;
+  }
+  .eyebrow.amber{color:var(--amber); background:rgba(232,183,74,0.1); border-color:rgba(232,183,74,0.3)}
+  .eyebrow.teal{color:var(--success); background:rgba(61,220,151,0.1); border-color:rgba(61,220,151,0.3)}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--success); box-shadow:0 0 8px var(--success)}
+
+  .btn{
+    appearance:none; border:none; cursor:pointer; font-weight:600; font-size:1rem;
+    padding:1em 1.6em; border-radius:.9rem; transition:transform .2s var(--ease), box-shadow .2s var(--ease), opacity .2s;
+    display:inline-flex; align-items:center; justify-content:center; gap:.6em;
+  }
+  .btn-primary{ background:var(--gradient-flow); color:#14181b; box-shadow:0 12px 32px -10px rgba(255,255,255,0.45) }
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 18px 42px -10px rgba(255,255,255,0.6)}
+  .btn-primary:active{transform:translateY(0)}
+  .btn-back{ background:transparent; color:var(--muted,#9aa5ab); border:1px solid var(--border,rgba(255,255,255,0.15)); box-shadow:none; margin-top:.7rem }
+  .btn-back:hover{ color:#fff; border-color:rgba(255,255,255,0.35) }
+  .btn-whats{ background:#25d366; color:#05300f; box-shadow:0 12px 30px -10px rgba(37,211,102,0.5) }
+  .btn-whats:hover{transform:translateY(-2px)}
+  .btn-ghost{ background:transparent; color:var(--fg); border:1px solid var(--border) }
+  .btn-ghost:hover{border-color:var(--primary); color:var(--primary-light)}
+  .btn-block{width:100%}
+  .btn:disabled{opacity:.4; cursor:not-allowed; transform:none}
+
+  #flow-progress{ position:fixed; top:0; left:0; width:100%; height:3px; z-index:100; background:rgba(255,255,255,0.06) }
+  #flow-progress .fill{ height:100%; width:10%; background:var(--gradient-flow); background-size:200% 100%; animation:shimmer 2.4s linear infinite; transition:width .6s var(--ease) }
+  @keyframes shimmer{0%{background-position:0% 0}100%{background-position:200% 0}}
+
+  #stage{position:relative; z-index:1; width:100%}
+  .step{ display:none; min-height:100vh; min-height:100dvh; width:100%; padding:5rem 1.25rem 3.5rem; align-items:flex-start; justify-content:center }
+  .step.active{display:flex}
+  .step.enter{animation:stepIn .55s var(--ease)}
+  @keyframes stepIn{from{opacity:0; transform:translateY(16px) scale(.99)}to{opacity:1; transform:translateY(0) scale(1)}}
+  .step-inner{width:100%; max-width:640px; margin:auto}
+  .step-wide .step-inner{max-width:820px}
+  .center{text-align:center}
+
+  .card{ background:linear-gradient(160deg, var(--card-2), var(--card)); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-card); padding:1.5rem }
+  .card-light{ background:var(--card-light); color:#132022; border-radius:var(--radius); box-shadow:var(--shadow-card); padding:1.5rem }
+  small.fine{display:block; color:var(--muted); font-size:.8rem; margin-top:1rem; line-height:1.5}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important}
+    body::before{animation:none}
+  }
+
+  /* fade-in escalonado reutilizavel */
+  .stagger{opacity:0; transform:translateY(10px); animation:fadeUp .5s var(--ease) forwards}
+  @keyframes fadeUp{to{opacity:1; transform:translateY(0)}}
+
+  /* ===== ETAPA 1 ===== */
+  #step-1 .headline{font-size:clamp(1.6rem,5vw,2.5rem); line-height:1.18}
+  #step-1 .sub{color:var(--muted); font-size:1.05rem; margin-top:.75rem}
+  .credibility{ margin-top:1.5rem; padding:.9rem 1.1rem; border-radius:var(--radius-sm); background:rgba(255,255,255,0.06); border:1px dashed rgba(255,255,255,0.3); color:var(--muted); font-size:.85rem; text-align:center }
+
+  .slide-track{ position:relative; margin-top:2rem; height:62px; border-radius:99px; background:var(--card-2); border:1px solid var(--border); display:flex; align-items:center; padding:0 5px; user-select:none; overflow:hidden }
+  .slide-track .slide-label{ position:absolute; left:0; right:0; text-align:center; font-weight:600; color:var(--fg); letter-spacing:.02em; font-size:.95rem; pointer-events:none }
+  .slide-thumb{ position:relative; z-index:2; width:52px; height:52px; border-radius:50%; background:var(--gradient-flow); display:flex; align-items:center; justify-content:center; cursor:grab; touch-action:none; box-shadow:0 6px 18px -6px rgba(255,255,255,0.6) }
+  .slide-thumb:active{cursor:grabbing}
+  .slide-thumb svg{width:22px; height:22px}
+  .slide-fill{ position:absolute; left:0; top:0; bottom:0; width:0; border-radius:99px; background:linear-gradient(90deg, rgba(255,255,255,0.28), rgba(255,255,255,0.06)) }
+  .swipe-hint{ margin-top:.9rem; font-family:var(--font-data); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted) }
+  .swipe-hint .chev{display:inline-block; animation:chevPulse 1.4s ease-in-out infinite}
+  .swipe-hint .chev:nth-child(2){animation-delay:.15s}
+  .swipe-hint .chev:nth-child(3){animation-delay:.3s}
+  @keyframes chevPulse{0%,100%{opacity:.3; transform:translateX(0)}50%{opacity:1; transform:translateX(3px)}}
+
+  /* ===== ETAPA 2: video em tela cheia ===== */
+  #step-2{padding:0; position:fixed; inset:0; z-index:2; align-items:stretch}
+  #step-2 .step-inner{max-width:none; margin:0; width:100%; height:100%}
+  .video-fullscreen{position:relative; width:100%; height:100%; background:#000; overflow:hidden}
+  .video-fullscreen iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+  .video-poster{
+    position:absolute; inset:0; width:100%; height:100%; border:0; cursor:pointer; padding:0;
+    background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center;
+  }
+  .video-poster::after{content:""; position:absolute; inset:0; background:rgba(0,0,0,0.28)}
+  .video-play-ic{
+    position:relative; z-index:1; width:78px; height:78px; border-radius:50%;
+    background:rgba(255,255,255,0.16); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:1.7rem; padding-left:6px; transition:transform .2s var(--ease);
+  }
+  .video-poster:hover .video-play-ic{transform:scale(1.08)}
+  .video-continue-btn{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:5;
+    width:min(88%,380px);
+  }
+
+  /* ===== ETAPA 3 ===== */
+  .objection-cards{display:grid; gap:.7rem; margin-top:1.5rem; text-align:center}
+  .objection-cards .row{ display:flex; gap:.8em; align-items:center; padding:.85em 1em; border-radius:var(--radius-sm); background:var(--card); border:1px solid var(--border); border-left:3px solid var(--danger) }
+  .objection-cards .xic{ flex:none; width:24px; height:24px; border-radius:50%; background:var(--danger-bg); color:#ff8b90; display:flex; align-items:center; justify-content:center; font-size:.85rem; font-weight:700 }
+  .objection-cards .row span.txt{font-size:.92rem}
+
+  /* ===== ETAPA 4 ===== */
+  .chat-window{ margin-top:1.4rem; border-radius:var(--radius); border:1px solid var(--border); background:var(--card); overflow:hidden; text-align:left }
+  .chat-header{ display:flex; align-items:center; gap:.7em; padding:.9rem 1.1rem; border-bottom:1px solid var(--border); background:var(--card-2) }
+  .chat-avatar{ width:36px; height:36px; border-radius:50%; background:var(--gradient-flow); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex:none; overflow:hidden }
+  .chat-avatar img{width:100%; height:100%; object-fit:cover; display:block}
+  .chat-header .name{font-weight:600; font-size:.92rem}
+  .chat-header .status{font-size:.75rem; color:var(--success)}
+  .chat-body{min-height:240px; max-height:44vh; overflow-y:auto; padding:1.1rem; display:flex; flex-direction:column; gap:.6rem}
+  .bubble{ max-width:80%; padding:.65em .95em; border-radius:1rem; font-size:.92rem; line-height:1.45; opacity:0; transform:translateY(6px); animation:bubbleIn .35s var(--ease) forwards }
+  @keyframes bubbleIn{to{opacity:1; transform:translateY(0)}}
+  .bubble.bot{align-self:flex-start; background:var(--card-2); border:1px solid var(--border); border-bottom-left-radius:.3rem}
+  .bubble.user{align-self:flex-end; background:var(--primary-dark); color:#03181a; border-bottom-right-radius:.3rem; font-weight:500}
+  .typing{align-self:flex-start; display:flex; gap:4px; padding:.8em 1em; background:var(--card-2); border:1px solid var(--border); border-radius:1rem; border-bottom-left-radius:.3rem}
+  .typing span{width:6px; height:6px; border-radius:50%; background:var(--muted); animation:blink 1.1s infinite}
+  .typing span:nth-child(2){animation-delay:.15s}
+  .typing span:nth-child(3){animation-delay:.3s}
+  @keyframes blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
+  .chip-row{display:flex; flex-wrap:wrap; gap:.5em; padding:0 1.1rem 1.1rem}
+  .chip{ border:1px solid var(--primary-dark); color:var(--primary-light); background:rgba(255,255,255,0.06); padding:.55em 1em; border-radius:99px; font-size:.85rem; cursor:pointer; transition:background .2s, transform .2s }
+  .chip:hover{background:rgba(255,255,255,0.15); transform:translateY(-1px)}
+
+  .audio-card{ margin-top:1.4rem; padding:1.1rem; border-radius:var(--radius); border:1px solid var(--border); background:var(--card); text-align:center; display:flex; gap:1rem; align-items:center }
+  .audio-play{ flex:none; width:50px; height:50px; border-radius:50%; border:none; cursor:pointer; background:var(--gradient-flow); display:flex; align-items:center; justify-content:center; transition:transform .2s var(--ease) }
+  .audio-play:hover{transform:scale(1.06)}
+  .audio-play svg{width:19px; height:19px}
+  .waveform{display:flex; align-items:center; gap:3px; height:30px; flex:1}
+  .waveform span{width:3px; border-radius:2px; background:var(--border); flex:none; transition:background .3s}
+  .waveform.playing span{background:var(--primary); animation:wave 1s ease-in-out infinite}
+  .waveform span:nth-child(odd){animation-delay:.15s}
+  .waveform span:nth-child(3n){animation-delay:.3s}
+  @keyframes wave{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+  .testimonial-quote{ margin-top:1rem; text-align:center; font-style:italic; color:var(--fg); font-size:.95rem; border-left:2px solid var(--primary-dark); padding-left:1rem }
+  .testimonial-quote cite{display:block; margin-top:.6rem; font-style:normal; color:var(--muted); font-size:.8rem}
+  .micro-decision{margin-top:1.4rem; display:flex; gap:.7rem; justify-content:center; flex-wrap:wrap}
+
+  /* ===== ETAPA 5 ===== */
+  .compare-card{
+    margin-top:1.5rem; border-radius:1.5rem; border:1px solid var(--border);
+    background:linear-gradient(165deg, rgba(255,255,255,0.035), var(--card) 55%);
+    overflow:hidden; text-align:center; box-shadow:0 30px 70px -28px rgba(0,0,0,0.65);
+  }
+  .compare-card .ct-title{ font-family:var(--font-data); font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); padding:1.2rem 1.1rem .6rem }
+  .compare-row{ display:flex; align-items:center; gap:1em; padding:1.15rem 1.3rem; position:relative }
+  .compare-row:not(:last-child)::after{ content:""; position:absolute; left:1.3rem; right:1.3rem; bottom:0; height:1px; background:linear-gradient(90deg, transparent, var(--border) 50%, transparent) }
+  .compare-row .ic{flex:none; width:46px; height:46px; border-radius:15px; display:flex; align-items:center; justify-content:center; font-size:1.25rem; box-shadow:0 10px 22px -10px rgba(0,0,0,0.6); overflow:hidden}
+  .compare-row .ic.ic-logo{background:#000}
+  .compare-row .ic.ic-logo img{width:100%; height:100%; object-fit:cover}
+  .compare-row .txt{flex:1; text-align:left}
+  .compare-row .txt b{display:block; font-size:1rem; letter-spacing:-0.01em}
+  .compare-tags{display:flex; flex-wrap:wrap; gap:.35rem; margin-top:.4rem}
+  .compare-tag{font-size:.68rem; padding:.22em .65em; border-radius:99px; background:rgba(255,255,255,0.05); color:var(--muted); border:1px solid var(--border); white-space:nowrap}
+  .compare-row.muted .ic{background:linear-gradient(160deg, rgba(229,72,77,0.22), rgba(229,72,77,0.06)); color:#ff8b90; border:1px solid rgba(229,72,77,0.3)}
+  .compare-row.win{ background:radial-gradient(ellipse 120% 100% at 50% 0%, rgba(255,255,255,0.14), transparent 75%); padding-top:1.5rem; padding-bottom:1.5rem }
+  .compare-row.win .ic{background:var(--gradient-flow); color:#14181b; box-shadow:0 12px 28px -8px rgba(255,255,255,0.5)}
+  .compare-row.win .txt b{ font-size:1.1rem; background:var(--gradient-flow); -webkit-background-clip:text; background-clip:text; color:transparent }
+  .compare-row.win .compare-tag{background:rgba(255,255,255,0.12); color:var(--fg); border-color:rgba(255,255,255,0.25); font-weight:600}
+  .attention-box{ margin-top:1.1rem; padding:1rem 1.1rem; border-radius:var(--radius-sm); background:var(--amber-bg); border:1px solid rgba(232,183,74,0.35); text-align:center }
+  .attention-box .tag{font-family:var(--font-data); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--amber); display:block; margin-bottom:.4em}
+  .attention-box p{color:#f0d9a3; font-size:.86rem; margin:0}
+
+  /* ===== ETAPA 6 ===== */
+  .stat-row2{display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin-top:1.5rem}
+  .stat-box{text-align:center; padding:1rem 1.1rem; border-radius:var(--radius-sm); background:var(--card); border:1px solid var(--border)}
+  .stat-box .lbl{display:block; font-family:var(--font-data); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .stat-box .stat{display:block; font-size:clamp(1.3rem,5vw,1.7rem); font-weight:700; color:var(--fg); margin:.2em 0}
+  .stat-box .trend{font-size:.75rem; color:var(--success)}
+  .result-card{margin-top:.8rem; padding:1.2rem; border-radius:var(--radius); border:1px solid var(--border); background:var(--card); text-align:center; position:relative}
+  .result-card .lbl{font-family:var(--font-data); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+  .result-card .sub{font-size:.78rem; color:var(--muted); margin:.15em 0 .5em}
+  .result-card .big{font-size:clamp(1.5rem,6vw,2rem); font-weight:700; font-family:var(--font-data); color:var(--fg)}
+  .chart-wrap{position:relative; margin-top:1rem}
+  .chart-wrap svg{width:100%; height:auto; display:block}
+  .flow-path{stroke-dasharray:600; stroke-dashoffset:600; transition:stroke-dashoffset 1.6s var(--ease)}
+  .chart-wrap.animated .flow-path{stroke-dashoffset:0}
+  .flow-fill{opacity:0; transition:opacity 1.2s var(--ease) .4s}
+  .chart-wrap.animated .flow-fill{opacity:1}
+  .chart-tooltip{ position:absolute; top:10%; left:66%; background:var(--fg); color:#0a1114; font-family:var(--font-data); font-weight:700; font-size:.75rem; padding:.3em .6em; border-radius:.5rem; opacity:0; transition:opacity .4s var(--ease) 1.3s }
+  .chart-wrap.animated .chart-tooltip{opacity:1}
+  .month-row{display:flex; justify-content:space-between; margin-top:.4rem; font-family:var(--font-data); font-size:.68rem; color:var(--muted)}
+  .month-row .now{color:var(--primary-light); font-weight:700}
+
+  /* ===== ETAPA 7 ===== */
+  .benefit-card{margin-top:1.3rem; padding:1.2rem 1.3rem; border-radius:var(--radius); text-align:center}
+  .benefit-card.positive{background:linear-gradient(160deg, rgba(61,220,151,0.1), var(--card)); border:1px solid rgba(61,220,151,0.3)}
+  .benefit-card .ct-title{font-family:var(--font-data); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--success); display:flex; align-items:center; justify-content:center; gap:.4em; margin-bottom:.6em}
+  .benefit-list{list-style:none; margin:0; padding:0; display:inline-flex; flex-direction:column; align-items:flex-start; gap:.5rem; text-align:left}
+  .benefit-list li{display:flex; gap:.6em; align-items:center; font-size:.92rem}
+  .benefit-list li .ico{flex:none; color:var(--success)}
+  .negative-card{ margin-top:1.1rem; padding:1.3rem; border-radius:var(--radius); background:linear-gradient(160deg, rgba(229,72,77,0.14), var(--card)); border:1px solid rgba(229,72,77,0.3); color:var(--fg); text-align:center }
+  .negative-card .ct-title{font-family:var(--font-data); font-size:.8rem; letter-spacing:.05em; text-transform:uppercase; color:#ff8b90; display:flex; align-items:center; justify-content:center; gap:.5em; margin-bottom:.7em; font-weight:700}
+  .negative-list{list-style:none; margin:0; padding:0; display:inline-flex; flex-direction:column; align-items:flex-start; gap:.55rem; text-align:left}
+  .negative-list li{display:flex; gap:.6em; align-items:center; font-size:.92rem; color:var(--fg)}
+  .negative-list li .ico{flex:none; color:#ff8b90}
+  .image-placeholder-card{margin-top:1.1rem; padding:1.2rem; border-radius:var(--radius); background:var(--card); border:1px solid var(--border); text-align:center}
+  .image-placeholder-card .tag{font-family:var(--font-data); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--primary-light)}
+  .image-placeholder-card h3{font-size:1.05rem; margin:.4em 0 .3em; color:var(--fg)}
+  .image-placeholder-box{ margin:.9rem 0; border-radius:var(--radius-sm); background:var(--card-2); border:1px solid var(--border); overflow:hidden; aspect-ratio:16/9 }
+  .image-placeholder-card p{color:var(--muted); font-size:.86rem; margin:0}
+  .cost-card{margin-top:1.1rem; padding:1.1rem 1.2rem; border-radius:var(--radius-sm); background:var(--amber-bg); border:1px solid rgba(232,183,74,0.3); text-align:center}
+  .cost-card .tag{font-family:var(--font-data); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--amber)}
+  .cost-card h3{font-size:1.05rem; margin:.4em 0 .3em; color:var(--fg)}
+  .cost-card p{color:var(--muted); font-size:.86rem; margin:0}
+  .opportunity-card{margin-top:1.1rem; padding:1.1rem 1.2rem; border-radius:var(--radius-sm); background:rgba(61,220,151,0.1); border:1px solid rgba(61,220,151,0.3); text-align:center}
+  .opportunity-card .tag{font-family:var(--font-data); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--success)}
+  .opportunity-card h3{font-size:1.05rem; margin:.4em 0 .3em; color:var(--fg)}
+  .opportunity-card p{color:var(--muted); font-size:.86rem; margin:0}
+
+  /* ===== ETAPA 8: cupom com flip 3D, fundo padrão do funil ===== */
+  #step-8{
+    position:relative; overflow:hidden;
+  }
+  /* removido: sparkle flutuante */
+  .scarcity-line{color:var(--fg); font-size:.9rem; margin-top:.4rem; font-weight:600}
+  .scarcity-line .hl{color:var(--success); font-weight:700}
+  .coupon-flip-scene{ perspective:1300px; margin:2rem auto 0; width:min(78%,280px); height:320px; position:relative; z-index:2 }
+  .coupon-flip-inner{ position:relative; width:100%; height:100%; cursor:pointer; transition:transform .9s cubic-bezier(.4,1.6,.4,1); transform-style:preserve-3d }
+  .coupon-flip-inner.flipped{transform:rotateY(180deg)}
+  .coupon-face{ position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:1.4rem; background:#fff; display:flex; flex-direction:column; align-items:center; padding:1.8rem 1.4rem 1.4rem; box-shadow:0 22px 55px -14px rgba(0,0,0,0.55) }
+  .coupon-face.back{transform:rotateY(180deg)}
+  .coupon-face-body{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%}
+  .coupon-spin-ic{width:58px; height:58px; margin-bottom:.8rem; animation:spin 3s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .coupon-face .cta-label{font-family:var(--font-body); font-size:1.2rem; font-weight:800; color:#0a1114; text-align:center}
+  .coupon-off-big{font-family:var(--font-body); font-size:2.3rem; font-weight:800; color:#0a1114; line-height:1; text-align:center}
+  .coupon-off-sub{font-family:var(--font-body); font-size:1rem; font-weight:800; color:#0a1114; margin-top:.2rem; text-align:center}
+  .coupon-off-note{font-size:.72rem; color:#6b7780; text-align:center; margin-top:.7rem; line-height:1.4}
+  .coupon-barcode{height:30px; width:86%; margin-top:.9rem; background:repeating-linear-gradient(90deg,#0a1114 0 2px, transparent 2px 5px); flex:none}
+  .coupon-barcode-num{font-family:var(--font-data); font-size:.66rem; color:#8a97a0; margin-top:.3rem; letter-spacing:.06em; flex:none}
+  .resgatar-btn{margin-top:1.8rem; background:var(--gradient-flow); color:#14181b; box-shadow:0 12px 32px -10px rgba(255,255,255,0.45); max-width:280px; margin-left:auto; margin-right:auto; border-radius:99px; font-weight:800}
+  .resgatar-btn:hover{transform:translateY(-2px)}
+  .confetti-layer{position:absolute; inset:0; pointer-events:none; overflow:visible; z-index:6}
+  .confetti-piece{position:absolute; top:40%; border-radius:2px; animation:confettiFall 1.4s ease-out forwards}
+  @keyframes confettiFall{0%{transform:translate(0,0) rotate(0deg); opacity:1}100%{transform:translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity:0}}
+
+  /* ===== ETAPA 9 ===== */
+  .encourage-box{margin-bottom:1.2rem; padding:.8rem 1.1rem; border-radius:99px; background:rgba(61,220,151,0.1); border:1px solid rgba(61,220,151,0.35); color:#bdf5d8; font-size:.86rem; text-align:center}
+  .testi-carousel{ margin-top:1rem; overflow:hidden; background:transparent; border:none }
+  .testi-track{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; align-items:center }
+  .testi-track::-webkit-scrollbar{display:none}
+  .testi-slide{ flex:0 0 100%; scroll-snap-align:center; max-height:68vh; display:flex; align-items:center; justify-content:center }
+  .testi-slide img{ max-width:100%; max-height:68vh; width:auto; height:auto; display:block; border-radius:1.1rem; border:none; box-shadow:0 16px 40px -14px rgba(0,0,0,0.55) }
+  .carousel-dots{display:flex; gap:.4rem; margin-top:.7rem; justify-content:center}
+  .carousel-dots span{width:6px; height:6px; border-radius:50%; background:var(--border); transition:background .2s var(--ease), transform .2s var(--ease)}
+  .carousel-dots span.active{background:var(--primary); transform:scale(1.3)}
+  .delivery-list{list-style:none; margin:1.4rem 0 0; padding:0; text-align:center; display:grid; gap:.7rem}
+
+  /* Grid de imagens do app (topo da etapa 9) */
+  .app-shots-grid{ display:grid; grid-template-columns:1fr 1fr; gap:.7rem; margin:1.2rem 0 0 }
+  .app-shots-grid .shot-full{ grid-column:1 / -1 }
+  .app-shots-grid img{ width:100%; height:auto; display:block; border-radius:var(--radius-sm); border:none; background:transparent }
+
+  /* Carrossel automático de bônus */
+  .bonus-carousel-wrap{ margin:1.2rem 0 0; overflow:hidden; border-radius:var(--radius-sm); position:relative }
+  .bonus-carousel-track{ display:flex; width:max-content; animation:bonusScroll 28s linear infinite }
+  .bonus-carousel-track:hover{ animation-play-state:paused }
+  .bonus-item{ flex:none; margin:0 .7rem 0 0; display:flex; flex-direction:column; align-items:center }
+  .bonus-carousel-track img{ height:340px; width:auto; display:block; border-radius:var(--radius-sm); border:none; background:transparent }
+  .bonus-item figcaption{ width:0; min-width:100%; margin-top:.6rem; text-align:center; font-size:.85rem; line-height:1.35 }
+  .bonus-item figcaption .bn-name{ display:block; font-weight:600; color:var(--fg) }
+  .bonus-item figcaption .bn-price{ display:block; margin-top:.15rem; font-size:1rem }
+  @keyframes bonusScroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+  @media (max-width:480px){
+    .bonus-carousel-track img{ height:260px }
+  }
+  .delivery-list li{ padding:.9em 1.1em; border-radius:var(--radius-sm); background:var(--card); border:1px solid var(--border); border-left:3px solid var(--primary); font-size:.92rem; font-weight:500 }
+  .bonus-price{ color:#ff4d4d; text-decoration:line-through; text-decoration-thickness:2px; font-weight:700 }
+
+  /* ===== ETAPA 10 ===== */
+  .mono-plan{margin-top:1.5rem; padding:1.6rem 1.4rem; border-radius:var(--radius); border:1px solid var(--border); background:linear-gradient(160deg, var(--card-2), var(--card)); text-align:center; box-shadow:var(--shadow-card)}
+  .mono-plan .plan-name{font-size:.85rem; color:var(--primary-light); text-transform:uppercase; letter-spacing:.08em; font-family:var(--font-data); font-weight:700}
+  .discount-badge{ display:inline-flex; margin-top:.7rem; padding:.4em 1em; border-radius:99px; background:rgba(61,220,151,0.12); border:1px solid rgba(61,220,151,0.35); color:var(--success); font-size:.8rem; font-weight:700 }
+  .mono-plan .plan-oldprice{font-family:var(--font-data); color:var(--muted); text-decoration:line-through; font-size:1.05rem; margin-top:.7rem}
+  .mono-plan .plan-price{font-family:var(--font-data); font-weight:800; font-size:2.6rem; margin:.2em 0; color:var(--fg)}
+  .mono-plan .plan-price span{font-size:1rem; color:var(--muted); font-weight:500}
+  .plan-pills{display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin-top:1rem}
+  .p-pill{border:1px solid var(--border); color:var(--fg); font-size:.78rem; font-weight:600; padding:.5em 1.1em; border-radius:99px; display:inline-flex; align-items:center; gap:.4em}
+  .plan-divider{height:1px; background:var(--border); margin:1.3rem 0}
+  .plan-inc-label{font-family:var(--font-data); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:.9rem}
+  .plan-inc-list{list-style:none; margin:0; padding:0; display:inline-flex; flex-direction:column; align-items:flex-start; gap:.7rem; text-align:left}
+  .plan-inc-list li{display:flex; gap:.6em; align-items:flex-start; font-size:.92rem}
+  .plan-inc-list .chk{color:var(--success); flex:none; margin-top:.1em}
+  .discount-note{ max-width:340px; margin:0 auto 1.2rem; padding:.7rem 1rem; border-radius:var(--radius-sm); background:rgba(61,220,151,0.1); border:1px solid rgba(61,220,151,0.35); color:#bdf5d8; font-size:.8rem; line-height:1.4; text-align:center }
+  .guarantee-card{margin-top:1rem; padding:1.2rem; border-radius:var(--radius); background:var(--card-light); color:#132022; text-align:center; display:flex; flex-direction:column; align-items:center; gap:.6rem}
+  .guarantee-tags{display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center; margin-top:.6rem}
+  .g-tag{ border:1px solid rgba(19,32,34,0.25); color:#132022; font-size:.78rem; font-weight:700; padding:.45em 1em; border-radius:99px; background:rgba(19,32,34,0.04) }
+  .guarantee-card .shield{font-size:1.6rem; flex:none}
+  .guarantee-card h3{font-size:1.02rem; margin:0 0 .3em; color:#0d1b1d}
+  .guarantee-card p{font-size:.85rem; color:#3d5457; margin:0}
+  .faq-section{margin-top:1.8rem; text-align:center}
+  .faq-section h3{font-size:1.15rem; margin-bottom:.8rem}
+  .faq-item{border-radius:var(--radius-sm); background:var(--card); border:1px solid var(--border); margin-bottom:.6rem; overflow:hidden}
+  .faq-q{ width:100%; text-align:left; background:none; border:none; color:var(--fg); padding:1em 1.1em; display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-size:.92rem; font-weight:500 }
+  .faq-q .plus{transition:transform .3s var(--ease); color:var(--primary-light); font-size:1.1rem; flex:none; margin-left:.6em}
+  .faq-item.open .plus{transform:rotate(45deg)}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .35s var(--ease)}
+  .faq-a p{padding:0 1.1em 1em; margin:0; color:var(--muted); font-size:.86rem}
+  footer{margin-top:2.2rem; text-align:center; color:var(--muted); font-size:.78rem}
+</style>
+<!-- ===== Google Analytics 4 ===== -->
+<script>
+  /* >>> COLE AQUI o seu ID de métricas do GA4 (formato G-XXXXXXXXXX) <<< */
+  window.GA_MEASUREMENT_ID = 'G-XP0JTEY23L';
+</script>
+<script>
+(function(){
+  var ID = window.GA_MEASUREMENT_ID;
+  var debug = /[?&]ga_debug=1/.test(location.search);
+  window.__gaDebug = debug;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ window.dataLayer.push(arguments); };
+  window.__gaEnabled = /^G-[A-Z0-9]{6,}$/.test(ID) && ID !== 'G-XXXXXXXXXX';
+  if(!window.__gaEnabled){
+    console.warn('[GA4] ID de métricas ainda não configurado: nenhum evento está sendo enviado.');
+    return;
+  }
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
+  document.head.appendChild(s);
+  gtag('js', new Date());
+  var ua = navigator.userAgent || '';
+  var inApp = /Instagram/i.test(ua) ? 'instagram'
+            : /musical_ly|BytedanceWebview|TikTok/i.test(ua) ? 'tiktok'
+            : /FBAN|FBAV/i.test(ua) ? 'facebook'
+            : /WhatsApp/i.test(ua) ? 'whatsapp' : 'nenhum';
+  var conn = (navigator.connection && navigator.connection.effectiveType) || 'desconhecida';
+  var cfg = {in_app_browser: inApp, connection_type: conn};
+  if(debug) cfg.debug_mode = true;
+  gtag('config', ID, cfg);
+})();
+</script>
+</head>
+<body>
+
+<div id="flow-progress" aria-hidden="true"><div class="fill" id="progress-fill"></div></div>
+
+<main id="stage">
+
+  <!-- ETAPA 1 -->
+  <section class="step active" id="step-1" data-step="1">
+    <div class="step-inner center">
+      <span class="eyebrow"><span class="dot"></span> Pessoas Usando Isso: +4.786</span>
+      <h1 class="headline">Eu vou te mostrar o sistema que está fazendo pessoas comuns tirarem a rotina do caos usando só o próprio celular.</h1>
+      <p class="sub">Pessoas que viviam esquecendo compromisso, adiando hábito e sem noção nenhuma do próprio progresso, organizaram a rotina inteira em poucos dias, mesmo com a agenda cheia.</p>
+      <div class="credibility">Aqui você não vai ver ator pago, promessa mirabolante ou depoimento fajuto.</div>
+
+      <div class="slide-track" id="slide-track">
+        <div class="slide-fill" id="slide-fill"></div>
+        <span class="slide-label" id="slide-label">Iniciar Agora</span>
+        <div class="slide-thumb" id="slide-thumb" role="button" tabindex="0" aria-label="Arraste para continuar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#14181b" stroke-width="2.4" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+      </div>
+      <div class="swipe-hint">DESLIZE PARA INICIAR <span class="chev">›</span><span class="chev">›</span><span class="chev">›</span></div>
+    </div>
+  </section>
+
+  <!-- ETAPA 2: VSL em tela cheia -->
+  <section class="step" id="step-2" data-step="2">
+    <div class="step-inner">
+      <div class="video-fullscreen" id="video-fullscreen">
+        <button class="video-poster" id="video-poster" aria-label="Reproduzir vídeo" style="background-image:url('https://img.youtube.com/vi/YS-TLPU1F80/hqdefault.jpg')">
+          <span class="video-play-ic">▶</span>
+        </button>
+      </div>
+      <button class="btn btn-primary video-continue-btn" id="to-step-3">Continuar →</button>
+      <button class="btn btn-back btn-block" type="button">← Voltar</button>
+    </div>
+  </section>
+
+  <!-- ETAPA 3 -->
+  <section class="step" id="step-3" data-step="3">
+    <div class="step-inner center">
+      <div class="stat-box" style="text-align:center; margin-bottom:1.3rem">
+        <span class="lbl">Resultado médio dos usuários ativos</span>
+        <span class="stat" id="stat3" data-count="143" data-suffix=" dias de streak">0 dias de streak</span>
+        <span class="trend">▲ 96,67% de eficácia</span>
+      </div>
+      <h2 style="font-size:clamp(1.4rem,4.5vw,2rem)">Pessoas comuns estão colocando planejamento, metas e hábitos no automático em até 7 dias.</h2>
+      <p class="sub">Calibrado uma vez pela IA, a partir do seu próprio padrão de uso.</p>
+      <div class="objection-cards">
+        <div class="row stagger" style="animation-delay:.05s"><span class="xic">✕</span><span class="txt">Sem precisar ser a pessoa hiperdisciplinada</span></div>
+        <div class="row stagger" style="animation-delay:.15s"><span class="xic">✕</span><span class="txt">Sem precisar de planilha, agenda de papel ou app de bloco de notas</span></div>
+        <div class="row stagger" style="animation-delay:.25s"><span class="xic">✕</span><span class="txt">Sem precisar de um especialista pago pra organizar sua rotina</span></div>
+        <div class="row stagger" style="animation-delay:.35s"><span class="xic">✕</span><span class="txt">Sem mudar sua vida inteira de uma vez</span></div>
+        <div class="row stagger" style="animation-delay:.45s"><span class="xic">✕</span><span class="txt">Sem esperar suporte, o Mindset IA responde na hora, 24h</span></div>
+      </div>
+      <button class="btn btn-primary btn-block" id="to-step-4" style="margin-top:1.6rem">Entender mais →</button>
+      <button class="btn btn-back btn-block" type="button">← Voltar</button>
+    </div>
+  </section>
+
+  <!-- ETAPA 4: chat + audio juntos -->
+  <section class="step" id="step-4" data-step="4">
+    <div class="step-inner">
+      <h2 class="center" style="font-size:clamp(1.3rem,4.2vw,1.8rem)">Seu mentor de rotina não fica só de conversa</h2>
+      <div class="chat-window">
+        <div class="chat-header">
+          <div class="chat-avatar"><img alt="Mindset IA" src="img/logo.webp" width="128" height="128" decoding="async"></div>
+          <div><div class="name">Mindset IA</div><div class="status">● online agora</div></div>
+        </div>
+        <div class="chat-body" id="chat-body"></div>
+        <div class="chip-row" id="chip-row" style="display:none"></div>
+      </div>
+
+      <div id="testimonial-block" style="display:none">
+        <div class="micro-decision"><button class="btn btn-primary" id="to-step-5">Continuar →</button></div>
+      </div>
+      <button class="btn btn-back btn-block" type="button">← Voltar</button>
+    </div>
+  </section>
+
+  <!-- ETAPA 5 -->
+  <section class="step" id="step-5" data-step="5">
+    <div class="step-inner center">
+      <h2 style="font-size:clamp(1.4rem,4.5vw,2rem)">O problema nunca foi sua falta de organização.</h2>
+      <p class="sub">Esse resultado vem de um único mecanismo, simples e direto:</p>
+      <div class="compare-card">
+        <div class="ct-title">Comparação entre modelos</div>
+        <div class="compare-row muted stagger" style="animation-delay:.05s">
+          <div class="ic">✕</div>
+          <div class="txt"><b>Mais um app de agenda genérico</b>
+            <div class="compare-tags"><span class="compare-tag">Genérico</span><span class="compare-tag">Você abandona</span><span class="compare-tag">Não aprende nada</span></div>
+          </div>
+        </div>
+        <div class="compare-row win stagger" style="animation-delay:.15s">
+          <div class="ic ic-logo"><img alt="Mindset IA" src="img/logo.webp" width="128" height="128" decoding="async"></div>
+          <div class="txt"><b>Mindset IA</b>
+            <div class="compare-tags"><span class="compare-tag">Tempo real</span><span class="compare-tag">Rotina personalizada</span><span class="compare-tag">Evolui com você</span></div>
+          </div>
+        </div>
+        <div class="compare-row muted stagger" style="animation-delay:.25s">
+          <div class="ic">✕</div>
+          <div class="txt"><b>A cultura da motivação</b>
+            <div class="compare-tags"><span class="compare-tag">Culpa você</span><span class="compare-tag">Insustentável</span><span class="compare-tag">Some em 2 semanas</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="attention-box">
+        <span class="tag">Atenção</span>
+        <p>Você não força nada. O sistema monta sua rotina, acompanha seus hábitos e ajusta suas metas sozinho, assim a consistência acontece sem esforço, ao contrário de outros métodos.</p>
+      </div>
+      <button class="btn btn-primary btn-block" id="to-step-6" style="margin-top:1.5rem">Ver a evolução média →</button>
+      <button class="btn btn-back btn-block" type="button">← Voltar</button>
+    </div>
+  </section>
+
+  <!-- ETAPA 6 -->
+  <section class="step" id="step-6" data-step="6">
+    <div class="step-inner center">
+      <span class="eyebrow"><span class="dot"></span> Informativo</span>
+      <h2 style="font-size:clamp(1.4rem,4.5vw,2rem); margin-top:.5em">Veja a evolução da rotina em 2026</h2>
+      <p class="sub">Este é o gráfico de evolução média de quem organiza a rotina com o nosso sistema inteligente.</p>
+
+      <div class="stat-row2">
+        <div class="stat-box"><span class="lbl">Pessoas usando</span><span class="stat" id="stat6a" data-count="4786" data-decimals="0">0</span><span class="trend">▲ streak médio de 143 dias</span></div>
+        <div class="stat-box"><span class="lbl">Consistência média</span><span class="stat" id="stat6b" data-count="96.67" data-decimals="2" data-suffix="%">0%</span><span class="trend">▲ de eficácia</span></div>
+      </div>
+
+      <div class="result-card">
+        <span class="lbl">Índice de desenvolvimento</span>
+        <span class="sub">dos usuários ativos nas últimas semanas foi de</span>
+        <span class="big" id="chart-big">0%</span>
+        <div class="chart-wrap" id="chart-wrap">
+          <span class="chart-tooltip">+62%</span>
+          <svg viewBox="0 0 400 160" preserveAspectRatio="none">
+            <defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient></defs>
+            <path class="flow-fill" fill="url(#areaGrad)" d="M0,140 C50,135 60,110 100,105 C150,98 160,80 200,72 C250,63 260,45 300,35 C340,27 360,20 400,12 L400,160 L0,160 Z"/>
+            <path class="flow-path" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" d="M0,140 C50,135 60,110 100,105 C150,98 160,80 200,72 C250,63 260,45 300,35 C340,27 360,20 400,12"/>
+          </svg>
+        </div>
+        <div class="month-row"><span>Sem 1</span><span>Sem 2</span><span>Sem 3</span><span class="now">Sem 4</span><span>Sem 5</span></div>
+      </div>
+      <small class="fine">Médias entre usuários ativos. Resultados individuais variam conforme uso e ponto de partida.</small>
+      <button class="btn btn-primary btn-block" id="to-step-7" style="margin-top:1.5rem">Continuar →</button>
+      <button class="btn btn-back btn-block" type="button">← Voltar</button>
+    </div>
+  </section>
+
+  <!-- ETAPA 7 -->
+  <section class="step step-wide" id="step-7" data-step="7">
+    <div class="step-inner center">
+      <h2 style="font-size:clamp(1.4rem,4.5vw,2rem)">A partir de agora a escolha é óbvia... E o único objetivo é não deixar a procrastinação tomar conta da sua rotina (eu quase deixei) 👇</h2>
+
+      <div class="benefit-card positive">
+        <div class="ct-title">✓ Com o Mindset IA</div>
+        <ul class="benefit-list">
+          <li><span class="ico">✓</span> Rotina em Fluxo e previsível</li>
+          <li><span class="ico">✓</span> Metas e hábitos evoluindo juntos, no automático</li>
+          <li><span class="ico">✓</span> Funciona de qualquer lugar, direto do celular</li>
+          <li><span class="ico">✓</span> Consistência sem depender de motivação</li>
+          <li><span class="ico">✓</span> Dashboard pronto, sem precisar montar nada</li>
+        </ul>
+      </div>
+
+      <div class="negative-card">
+        <div class="ct-title">⚠ Sem o Mindset IA</div>
+        <ul class="negative-list">
+          <li><span class="ico">✕</span> Ansiedade com o que fica pra depois</li>
+          <li><span class="ico">✕</span> Dependência de força de vontade</li>
+          <li><span class="ico">✕</span> Meta que você traça e esquece em uma semana</li>
+          <li><span class="ico">✕</span> Correria sem fim no dia a dia</li>
+          <li><span class="ico">✕</span> Vários apps de agenda que nunca se conectam</li>
+        </ul>
+      </div>
+
+      <div class="image-placeholder-card">
+        <span class="tag">Extraordinário</span>
+        <h3>Com poucos minutos por dia, o sistema organiza sua rotina inteira</h3>
+        <div class="image-placeholder-box">
+          <img alt="Dashboard do Mindset IA" loading="lazy" style="width:100%; height:100%; object-fit:contain" src="img/dashboard-etapa7.webp" width="960" height="540" decoding="async">
+        </div>
+        <p>Entenda como pessoas comuns estão usando o Mindset IA pra parar de gerenciar vários apps de agenda e passar a ter a rotina em Fluxo de fato, mesmo sem tempo sobrando.</p>
+      </div>
+
+      <div class="cost-card">
+        <span class="tag">Por que o acesso é cobrado</span>
+        <h3>Com a febre da I.A, servidores online ficam cada dia mais caros</h3>
+        <p>A cada semana que passa, manter uma IA que aprende seu padrão fica mais caro, o que gera reajuste no valor do acesso.</p>
+      </div>
+
+      <div class="opportunity-card">
+        <span class="tag">Oportunidade primeiro acesso</span>
+        <h3>Você desbloqueou um Cupom de Fundador por chegar até aqui 🍀</h3>
+        <p>Continue abaixo pra garantir sua condição promocional de primeiro acesso.</p>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="to-step-8" style="margin-top:1.5rem">Continuar para finalização →</button>
+      <button class="btn btn-back btn-block" type="button">← Voltar</button>
+    </div>
+  </section>
+
+  <!-- ETAPA 8 -->
+  <section class="step" id="step-8" data-step="8">
+    <div class="step-inner center">
+      <h2 id="coupon-heading" style="font-size:clamp(1.5rem,5vw,2.1rem)">Resgate Seu Cupom</h2>
+      <p class="scarcity-line" id="scarcity-text">Restam apenas <span class="hl">214 cupons</span> até 5.000 membros. Clique em <span class="hl">Resgatar Agora</span>.</p>
+
+      <div class="coupon-flip-scene">
+        <div class="coupon-flip-inner" id="coupon-flip-inner">
+          <div class="coupon-face front">
+            <div class="coupon-face-body">
+              <svg class="coupon-spin-ic" viewBox="0 0 24 24" fill="#0a1114"><path d="M12 2c2.2 0 4 1.8 4 4 0 1.9-1.3 3.5-3 3.9V10c1.7.4 3 2 3 3.9 0 2.2-1.8 4-4 4s-4-1.8-4-4c0-1.9 1.3-3.5 3-3.9V10c-1.7-.4-3-2-3-3.9 0-2.2 1.8-4 4-4z"/></svg>
+              <div class="cta-label">Resgate seu cupom</div>
+            </div>
+            <div class="coupon-barcode"></div>
+          </div>
+          <div class="coupon-face back">
+            <div class="coupon-face-body">
+              <span class="coupon-off-big">85% OFF</span>
+              <span class="coupon-off-sub">De Desconto</span>
+              <p class="coupon-off-note">Como é seu primeiro acesso, você ganhou um bônus de 85% Off, válido somente uma vez.</p>
+            </div>
+            <div class="coupon-barcode"></div>
+            <div class="coupon-barcode-num">237849560123</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="confetti-layer" id="confetti-layer"></div>
+
+      <button class="btn resgatar-btn btn-block" id="resgatar-btn">Resgatar Agora</button>
+      <button class="btn btn-primary btn-block" id="to-step-9" style="margin-top:1rem; display:none">Finalizar Acesso →</button>
+      <button class="btn btn-back btn-block" type="button">← Voltar</button>
+    </div>
+  </section>
+
+  <!-- ETAPA 9 -->
+  <section class="step" id="step-9" data-step="9">
+    <div class="step-inner center">
+      <p class="encourage-box">🍀 Ainda bem que você chegou até aqui. Quem continua até o fim é quem realmente sai do lugar 🍀</p>
+
+      <div class="testi-carousel">
+        <div class="testi-track" id="testi-track">
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-01.webp" width="780" height="485" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuário no Instagram" loading="lazy" src="img/depoimento-02.webp" width="780" height="619" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-03.webp" width="780" height="299" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuário no Instagram" loading="lazy" src="img/depoimento-04.webp" width="780" height="889" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária no Instagram" loading="lazy" src="img/depoimento-05.webp" width="780" height="318" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-06.webp" width="780" height="734" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-07.webp" width="780" height="313" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-08.webp" width="780" height="844" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuário no WhatsApp" loading="lazy" src="img/depoimento-09.webp" width="780" height="891" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-10.webp" width="780" height="919" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-11.webp" width="780" height="494" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-12.webp" width="780" height="298" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-13.webp" width="780" height="472" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-14.webp" width="780" height="989" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-15.webp" width="780" height="716" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-16.webp" width="780" height="380" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuário no WhatsApp" loading="lazy" src="img/depoimento-17.webp" width="780" height="660" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária no Instagram" loading="lazy" src="img/depoimento-18.webp" width="780" height="312" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuária real" loading="lazy" src="img/depoimento-19.webp" width="780" height="812" decoding="async"></div>
+          <div class="testi-slide"><img alt="Depoimento de usuário no WhatsApp" loading="lazy" src="img/depoimento-20.webp" width="780" height="559" decoding="async"></div>
+        </div>
+      </div>
+      <div class="carousel-dots" id="testi-dots"></div>
+
+      <h2 style="font-size:clamp(1.3rem,4.5vw,1.9rem); margin-top:1.2rem">Veja por dentro o sistema que vai organizar sua rotina</h2>
+      <p class="sub">Planejamento, metas, hábitos, Dashboard e seu mentor com IA, tudo em um único app, sem precisar de planilha ou de vários apps.</p>
+      <div class="app-shots-grid">
+        <img alt="Tela de Rotina do app Mindset IA" loading="lazy" src="img/app-rotina.webp" width="640" height="800" decoding="async">
+        <img alt="Tela do mentor Mindset IA" loading="lazy" src="img/app-mindset-ia.webp" width="640" height="800" decoding="async">
+        <img class="shot-full"  alt="Tela de Dashboard do app Mindset IA" loading="lazy" src="img/app-dashboard.webp" width="900" height="1125" decoding="async">
+      </div>
+      <p class="sub" style="margin-top:1.4rem; font-weight:600; text-align:center">E ainda leva de bônus:</p>
+      <div class="bonus-carousel-wrap">
+        <div class="bonus-carousel-track">
+          <figure class="bonus-item"><img alt="Bônus: Treino personalizado" loading="lazy" src="img/bonus-treino.webp" width="640" height="800" decoding="async"><figcaption><span class="bn-name">Treino personalizado</span><span class="bn-price bonus-price">R$157,90</span></figcaption></figure>
+          <figure class="bonus-item"><img alt="Bônus: Controle Financeiro" loading="lazy" src="img/bonus-financeiro.webp" width="640" height="800" decoding="async"><figcaption><span class="bn-name">Controle Financeiro</span><span class="bn-price bonus-price">R$197,90</span></figcaption></figure>
+          <figure class="bonus-item"><img alt="Bônus: Bem-estar" loading="lazy" src="img/bonus-bemestar.webp" width="640" height="800" decoding="async"><figcaption><span class="bn-name">Bem-estar</span><span class="bn-price bonus-price">R$137,90</span></figcaption></figure>
+          <figure class="bonus-item"><img alt="Bônus: Perfil, Conquistas, Leitura e Biblioteca" loading="lazy" src="img/bonus-extras.webp" width="640" height="800" decoding="async"><figcaption><span class="bn-name">Perfil, Conquistas, Leitura e Biblioteca</span><span class="bn-price bonus-price">R$453,70</span></figcaption></figure>
+          <figure class="bonus-item" aria-hidden="true"><img alt="Bônus: Treino personalizado" loading="lazy" src="img/bonus-treino.webp" width="640" height="800" decoding="async"><figcaption><span class="bn-name">Treino personalizado</span><span class="bn-price bonus-price">R$157,90</span></figcaption></figure>
+          <figure class="bonus-item" aria-hidden="true"><img alt="Bônus: Controle Financeiro" loading="lazy" src="img/bonus-financeiro.webp" width="640" height="800" decoding="async"><figcaption><span class="bn-name">Controle Financeiro</span><span class="bn-price bonus-price">R$197,90</span></figcaption></figure>
+          <figure class="bonus-item" aria-hidden="true"><img alt="Bônus: Bem-estar" loading="lazy" src="img/bonus-bemestar.webp" width="640" height="800" decoding="async"><figcaption><span class="bn-name">Bem-estar</span><span class="bn-price bonus-price">R$137,90</span></figcaption></figure>
+          <figure class="bonus-item" aria-hidden="true"><img alt="Bônus: Perfil, Conquistas, Leitura e Biblioteca" loading="lazy" src="img/bonus-extras.webp" width="640" height="800" decoding="async"><figcaption><span class="bn-name">Perfil, Conquistas, Leitura e Biblioteca</span><span class="bn-price bonus-price">R$453,70</span></figcaption></figure>
+        </div>
+      </div>
+      <p class="sub" style="margin-top:1rem">Valor total em bônus: <b class="bonus-price">R$947,40</b> — hoje inclusos sem custo extra.</p>
+      <button class="btn btn-primary btn-block" id="to-step-10" style="margin-top:1.5rem">Continuar →</button>
+      <button class="btn btn-back btn-block" type="button">← Voltar</button>
+    </div>
+  </section>
+
+  <!-- ETAPA 10 -->
+  <section class="step" id="step-10" data-step="10">
+    <div class="step-inner center">
+      <p class="discount-note" id="discount-note">Este desconto é aplicável somente no dia que foi resgatado o cupom, <span id="redeem-datetime">hoje</span>.</p>
+      <span class="eyebrow"><span class="dot"></span> Acesso quase liberado</span>
+      <h2 style="font-size:clamp(1.4rem,4.5vw,2rem); margin-top:.6em">Seu acesso está quase liberado para uso!</h2>
+      <p class="sub">Sua Rotina em Fluxo está pronta. Garanta seu acesso ao Mindset IA agora mesmo.</p>
+
+      <div class="mono-plan">
+        <div class="plan-name">Mensal</div>
+        <div class="discount-badge">🔥 85% de desconto 🔥</div>
+        <div class="plan-oldprice">R$166,00/mês</div>
+        <div class="plan-price">R$24,90 <span>/mês</span></div>
+        <div class="plan-pills">
+          <span class="p-pill">🛡️ 7 dias de garantia</span>
+          <span class="p-pill">🔒 Compra 100% segura</span>
+          <span class="p-pill">⚡ Acesso imediato</span>
+        </div>
+        <div class="plan-divider"></div>
+        <div class="plan-inc-label">Seu sistema de Rotina</div>
+        <ul class="plan-inc-list">
+          <li><span class="chk">✓</span>Planejamento, metas, hábitos e Dashboard completo</li>
+          <li><span class="chk">✓</span>Mentor com Inteligência Artificial 24h</li>
+          <li><span class="chk">✓</span>Histórico completo de progresso</li>
+          <li><span class="chk">✓</span>Gráficos, estatísticas e insights</li>
+          <li><span class="chk">✓</span>Suporte prioritário</li>
+        </ul>
+        <div class="plan-inc-label" style="margin-top:1rem">+ De bônus (R$947,40 em valor)</div>
+        <ul class="plan-inc-list">
+          <li><span class="chk">✓</span>Treino personalizado com mapa muscular</li>
+          <li><span class="chk">✓</span>Financeiro com o método Divisão Magnata</li>
+          <li><span class="chk">✓</span>Bem-estar: humor e sono</li>
+          <li><span class="chk">✓</span>Leitura, conquistas, perfil e biblioteca exclusiva</li>
+        </ul>
+        <button class="btn btn-primary btn-block" id="checkout-btn" style="margin-top:1.5rem">Começar agora →</button>
+        <button class="btn btn-back btn-block" type="button">← Voltar</button>
+      </div>
+
+      <div class="guarantee-card">
+        <div class="shield">🛡️</div>
+        <div>
+          <h3>Garantia incondicional de 7 dias</h3>
+          <p>Experimente o Mindset IA sem nenhum risco. Se por qualquer motivo você não ficar satisfeito nos primeiros 7 dias, devolvemos <strong>100% do seu dinheiro</strong>, sem perguntas, sem burocracia.</p>
+          <div class="guarantee-tags">
+            <span class="g-tag">✓ Reembolso total</span>
+            <span class="g-tag">✓ Sem perguntas</span>
+            <span class="g-tag">✓ Sem burocracia</span>
+            <span class="g-tag">✓ Pagamento seguro</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="https://wa.me/556282351477" class="btn btn-whats btn-block" style="margin-top:1.4rem; text-decoration:none">💬 Falar com o suporte</a>
+
+      <div class="faq-section">
+        <h3>Perguntas frequentes</h3>
+        <div class="faq-item">
+          <button class="faq-q">Posso cancelar quando quiser?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Sim, 100%. Você cancela a qualquer momento, sem multa e sem burocracia. Nenhuma pergunta, nenhuma complicação.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Por que vale a pena assinar agora?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Porque o preço atual de R$24,90/mês é promocional de lançamento e pode aumentar a qualquer momento. Quanto antes você começar, mais cedo vai ver resultados reais, e mais tempo aproveita pelo menor preço. Sem fidelidade, cancela quando quiser.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Como vou receber meu acesso ao app?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Você recebe o acesso ao app imediatamente após a compra. O link é enviado por WhatsApp e e-mail, então é importante que estejam corretos no momento da compra.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">O que inclui o acesso completo?<span class="plus">+</span></button>
+          <div class="faq-a"><p>A base é o sistema completo de Rotina: planejamento, metas, hábitos, Dashboard e mentor com Inteligência Artificial 24h. E de bônus você ainda leva treinos com mapa muscular, controle financeiro com o método Divisão Magnata, bem-estar (humor e sono), conquistas, perfil e biblioteca de conteúdos, tudo em um único lugar.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Tem garantia de reembolso?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Sim. Garantia incondicional de 7 dias. Se por qualquer motivo não ficar satisfeito, devolvemos 100% do valor pago, sem perguntas, sem burocracia.</p></div>
+        </div>
+      </div>
+
+      <footer>Mindset IA © 2026, todos os direitos reservados</footer>
+    </div>
+  </section>
+
+</main>
+
+
+<script>
+(function(){
+  "use strict";
+  var SEQ = [1,3,4,5,6,7,8,9,10];
+  var TOTAL_STEPS = SEQ.length;
+  var current = 1;
+  var played = {};
+
+  function indexOfStep(n){ return SEQ.indexOf(n); }
+
+  function goToStep(n){
+    var from = document.getElementById('step-'+current);
+    var to = document.getElementById('step-'+n);
+    if(!to) return;
+    if(from){ from.classList.remove('active','enter'); }
+    to.classList.add('active');
+    void to.offsetWidth;
+    to.classList.add('enter');
+    current = n;
+    var idx = indexOfStep(n);
+    document.getElementById('progress-fill').style.width = ((idx+1)/TOTAL_STEPS*100)+'%';
+    window.scrollTo({top:0, behavior:'auto'});
+    runStepEnter(n);
+  }
+
+  function bindNext(btnId, nextStep){
+    var btn = document.getElementById(btnId);
+    if(btn){ btn.addEventListener('click', function(){ goToStep(nextStep); }); }
+  }
+  bindNext('to-step-3',3);
+  bindNext('to-step-4',4); bindNext('to-step-5',5); bindNext('to-step-6',6);
+  bindNext('to-step-7',7); bindNext('to-step-8',8); bindNext('to-step-9',9); bindNext('to-step-10',10);
+
+  /* Botão Voltar: volta para a etapa anterior dentro da SEQ ativa */
+  function goToPrevStep(){
+    var idx = indexOfStep(current);
+    if(idx > 0){ goToStep(SEQ[idx-1]); }
+  }
+  document.querySelectorAll('.btn-back').forEach(function(btn){
+    btn.addEventListener('click', goToPrevStep);
+  });
+
+  /* ETAPA 1: slide to unlock -> vai pra pagina da VSL */
+  var resetSlideUnlock = function(){};
+  (function(){
+    var track = document.getElementById('slide-track');
+    var thumb = document.getElementById('slide-thumb');
+    var fill = document.getElementById('slide-fill');
+    var label = document.getElementById('slide-label');
+    var dragging = false, startX = 0, maxX = 0, unlocked = false;
+
+    function trackMetrics(){ maxX = track.clientWidth - thumb.clientWidth - 10; }
+    trackMetrics();
+    window.addEventListener('resize', trackMetrics);
+
+    function setThumb(x){
+      x = Math.max(0, Math.min(maxX, x));
+      thumb.style.transform = 'translateX('+x+'px)';
+      fill.style.width = (x + thumb.clientWidth) + 'px';
+      return x;
+    }
+    function unlock(){
+      if(unlocked) return; unlocked = true;
+      setThumb(maxX); label.textContent = 'Destravado';
+      setTimeout(function(){ goToStep(3); }, 400);
+    }
+    function onDown(e){ if(unlocked) return; dragging = true; startX = (e.touches?e.touches[0].clientX:e.clientX) - (thumb.getBoundingClientRect().left - track.getBoundingClientRect().left); }
+    function onMove(e){ if(!dragging||unlocked) return; var clientX = e.touches?e.touches[0].clientX:e.clientX; setThumb(clientX - track.getBoundingClientRect().left - startX); }
+    function onUp(){ if(!dragging||unlocked) return; dragging=false; var cx = thumb.getBoundingClientRect().left - track.getBoundingClientRect().left; if(cx > maxX*0.8){ unlock(); } else { setThumb(0); } }
+
+    thumb.addEventListener('pointerdown', onDown);
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    thumb.addEventListener('touchstart', onDown, {passive:true});
+    window.addEventListener('touchmove', onMove, {passive:true});
+    window.addEventListener('touchend', onUp);
+    thumb.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); unlock(); } });
+
+    resetSlideUnlock = function(){
+      dragging = false; unlocked = false;
+      trackMetrics(); setThumb(0);
+      label.textContent = 'Deslize para destravar';
+    };
+  })();
+
+  /* ETAPA 2: video do YouTube, carregado só ao clicar */
+  (function(){
+    var poster = document.getElementById('video-poster');
+    var host = document.getElementById('video-fullscreen');
+    if(!poster) return;
+    poster.addEventListener('click', function(){
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube.com/embed/YS-TLPU1F80?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+      iframe.allowFullscreen = true;
+      host.appendChild(iframe);
+      poster.remove();
+    });
+  })();
+
+  /* ETAPA 4: chat + testemunho */
+  function runChat(){
+    if(played.chat) return; played.chat = true;
+    var body = document.getElementById('chat-body');
+    var chips = document.getElementById('chip-row');
+    var testimonialBlock = document.getElementById('testimonial-block');
+    function addBubble(sender, text){
+      var b=document.createElement('div'); b.className='bubble '+sender; b.textContent=text; body.appendChild(b); body.scrollTop=body.scrollHeight;
+    }
+    function addTyping(cb){
+      var t=document.createElement('div'); t.className='typing'; t.innerHTML='<span></span><span></span><span></span>'; body.appendChild(t); body.scrollTop=body.scrollHeight;
+      setTimeout(function(){ t.remove(); cb(); },900);
+    }
+    addTyping(function(){
+      addBubble('bot','Oi! Eu sou o mentor do Mindset IA. Fico de olho na sua rotina, suas metas e seus hábitos em tempo real.');
+      addTyping(function(){
+        addBubble('bot','Te faço uma pergunta rápida: teve algum hábito hoje que você deixou passar sem nem perceber?');
+        chips.style.display='flex';
+        ['Sim, mais de um','Sempre acontece','Não lembro'].forEach(function(txt){
+          var c=document.createElement('button'); c.className='chip'; c.type='button'; c.textContent=txt;
+          c.addEventListener('click', function(){
+            chips.style.display='none'; chips.innerHTML='';
+            addBubble('user', txt);
+            addTyping(function(){
+              addBubble('bot','Anotado. Já ajustei seu Dashboard de Rotina. Você não precisa lembrar de nada sozinho, é só seguir o plano do dia.');
+              addTyping(function(){
+                addBubble('bot','E como anda sua meta principal? Você diria que tá evoluindo, parada ou nem lembra mais qual era?');
+                chips.style.display='flex';
+                ['Tá parada','Evoluindo devagar','Nem lembro mais'].forEach(function(txt2){
+                  var c2=document.createElement('button'); c2.className='chip'; c2.type='button'; c2.textContent=txt2;
+                  c2.addEventListener('click', function(){
+                    chips.style.display='none'; chips.innerHTML='';
+                    addBubble('user', txt2);
+                    addTyping(function(){
+                      addBubble('bot','É exatamente pra isso que eu existo. Eu retomo sua meta, quebro em passos pequenos e te lembro todo dia até virar hábito.');
+                      addTyping(function(){
+                        addBubble('bot','Última pergunta: hoje, quando você olha seu dia, você sabe exatamente o que precisa fazer ou fica decidindo na hora?');
+                        chips.style.display='flex';
+                        ['Decido na hora','Sigo mais ou menos','Não tenho um plano'].forEach(function(txt3){
+                          var c3=document.createElement('button'); c3.className='chip'; c3.type='button'; c3.textContent=txt3;
+                          c3.addEventListener('click', function(){
+                            chips.style.display='none'; chips.innerHTML='';
+                            addBubble('user', txt3);
+                            addTyping(function(){
+                              addBubble('bot','Então seu Dashboard de Rotina vai te ajudar bastante. Todo dia você abre e já sabe exatamente por onde começar, sem precisar decidir nada na hora.');
+                              addTyping(function(){
+                                addBubble('bot','Isso foi só uma prova rápida. Lá dentro eu também acompanho seu planejamento completo, seus hábitos e seu progresso, sempre em tempo real.');
+                                testimonialBlock.style.display='block';
+                              });
+                            });
+                          });
+                          chips.appendChild(c3);
+                        });
+                      });
+                    });
+                  });
+                  chips.appendChild(c2);
+                });
+              });
+            });
+          });
+          chips.appendChild(c);
+        });
+      });
+    });
+  }
+
+  (function(){
+    var wf = document.getElementById('waveform');
+    var playBtn = document.getElementById('audio-play');
+    if(!wf || !playBtn) return;
+    for(var k=0;k<28;k++){ var bar=document.createElement('span'); bar.style.height=(8+Math.random()*22)+'px'; wf.appendChild(bar); }
+    var playing=false;
+    playBtn.addEventListener('click', function(){ playing=!playing; wf.classList.toggle('playing',playing); });
+  })();
+
+  /* Contador genérico reutilizável pra qualquer .stat com data-count */
+  function countUpEl(el, dur){
+    dur = dur || 1400;
+    var target = parseFloat(el.getAttribute('data-count'));
+    var decimals = parseInt(el.getAttribute('data-decimals')||'0',10);
+    var suffix = el.getAttribute('data-suffix') || '';
+    var startTime = null;
+    function fmt(v){ return v.toLocaleString('pt-BR', {minimumFractionDigits:decimals, maximumFractionDigits:decimals}); }
+    function frame(ts){
+      if(!startTime) startTime = ts;
+      var progress = Math.min(1, (ts-startTime)/dur);
+      el.textContent = fmt(target*progress) + suffix;
+      if(progress<1) requestAnimationFrame(frame);
+      else el.textContent = fmt(target) + suffix;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function runStep3Stats(){
+    if(played.stat3) return; played.stat3 = true;
+    var el = document.getElementById('stat3');
+    if(el) countUpEl(el);
+  }
+
+  function runStep6Stats(){
+    if(played.stat6) return; played.stat6 = true;
+    ['stat6a','stat6b'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) countUpEl(el);
+    });
+  }
+
+  /* ETAPA 6: grafico + contadores */
+  function runChart(){
+    if(played.chart) return; played.chart = true;
+    document.getElementById('chart-wrap').classList.add('animated');
+    var bigEl = document.getElementById('chart-big');
+    var target = 97.89, dur = 1500, startTime = null;
+    function frame(ts){
+      if(!startTime) startTime = ts;
+      var progress = Math.min(1,(ts-startTime)/dur);
+      bigEl.textContent = Math.floor(progress*target) + '%';
+      if(progress<1) requestAnimationFrame(frame);
+      else bigEl.textContent = '97,89%';
+    }
+    requestAnimationFrame(frame);
+  }
+
+  /* ETAPA 8: flip do cupom + confete */
+  (function(){
+    var flipInner = document.getElementById('coupon-flip-inner');
+    var resgatarBtn = document.getElementById('resgatar-btn');
+    var toNext = document.getElementById('to-step-9');
+    var heading = document.getElementById('coupon-heading');
+    var scarcity = document.getElementById('scarcity-text');
+    var layer = document.getElementById('confetti-layer');
+    var colors = ['#17e6f7','#6ef2fb','#0aa8b8','#ffffff','#04262b'];
+    var done = false;
+    function reveal(){
+      if(done) return; done = true;
+      flipInner.classList.add('flipped');
+      heading.textContent = 'Cupom Resgatado! 🎉';
+      scarcity.innerHTML = 'Clique abaixo para finalizar seu acesso e garantir o <span class="hl">desconto até hoje 23:59</span>.';
+      resgatarBtn.style.display = 'none';
+      toNext.style.display = 'inline-flex';
+      var now = new Date();
+      var pad = function(n){ return (n<10?'0':'')+n; };
+      window.__cupomResgatadoEm = pad(now.getDate())+'/'+pad(now.getMonth()+1)+'/'+now.getFullYear()+' às '+pad(now.getHours())+':'+pad(now.getMinutes());
+      for(var i=0;i<30;i++){
+        var p=document.createElement('span'); p.className='confetti-piece';
+        var size=5+Math.random()*5; p.style.width=size+'px'; p.style.height=(size*0.4)+'px';
+        p.style.left=(35+Math.random()*30)+'%'; p.style.top='38%';
+        p.style.background=colors[Math.floor(Math.random()*colors.length)];
+        p.style.setProperty('--dx',(Math.random()*320-160)+'px'); p.style.setProperty('--dy',(Math.random()*-200-40)+'px'); p.style.setProperty('--rot',(Math.random()*360)+'deg');
+        p.style.animationDelay=(Math.random()*0.15)+'s'; layer.appendChild(p);
+        (function(el){ setTimeout(function(){ el.remove(); },1700); })(p);
+      }
+    }
+    resgatarBtn.addEventListener('click', reveal);
+    flipInner.addEventListener('click', reveal);
+  })();
+
+  /* ETAPA 10: FAQ accordion */
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var q = item.querySelector('.faq-q'), a = item.querySelector('.faq-a');
+    q.addEventListener('click', function(){
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(o){ o.classList.remove('open'); o.querySelector('.faq-a').style.maxHeight=null; });
+      if(!isOpen){ item.classList.add('open'); a.style.maxHeight = a.scrollHeight+'px'; }
+    });
+  });
+
+  document.getElementById('checkout-btn').addEventListener('click', function(){
+    window.location.href = 'https://ggcheckout.app/checkout/v5/DUIXBGLFGnYbwQKpAb7e';
+  });
+
+  /* ETAPA 9: carrossel de depoimentos */
+  (function(){
+    var track = document.getElementById('testi-track');
+    var dotsWrap = document.getElementById('testi-dots');
+    if(!track) return;
+    var total = track.children.length;
+    for(var i=0;i<total;i++){
+      var d = document.createElement('span');
+      if(i===0) d.classList.add('active');
+      dotsWrap.appendChild(d);
+    }
+    var dots = dotsWrap.children;
+    track.addEventListener('scroll', function(){
+      var idx = Math.round(track.scrollLeft / track.clientWidth);
+      for(var i=0;i<dots.length;i++){ dots[i].classList.toggle('active', i===idx); }
+    });
+  })();
+
+  function runStepEnter(n){
+    if(n===1) resetSlideUnlock();
+    if(n===3) runStep3Stats();
+    if(n===4) runChat();
+    if(n===6){ runChart(); runStep6Stats(); }
+    if(n===10){
+      var el = document.getElementById('redeem-datetime');
+      if(el) el.textContent = window.__cupomResgatadoEm || (function(){
+        var now=new Date(), pad=function(x){return (x<10?'0':'')+x};
+        return pad(now.getDate())+'/'+pad(now.getMonth()+1)+'/'+now.getFullYear()+' às '+pad(now.getHours())+':'+pad(now.getMinutes());
+      })();
+    }
+  }
+
+  /* entra direto na etapa certa se vier de outra pagina (ex: da VSL) */
+  (function(){
+    var hash = window.location.hash.replace('#step-','');
+    var n = parseInt(hash,10);
+    if(n && SEQ.indexOf(n)!==-1 && n!==1){ goToStep(n); }
+  })();
+})();
+</script>
+<script>
+/* ===== Rastreamento de eventos do funil (GA4) ===== */
+(function(){
+  var PRICE = 24.90, OLD_PRICE = 166.00, CURRENCY = 'BRL';
+  var STEP_NAMES = {1:'abertura',2:'vsl',3:'prova_social',4:'mentor_chat',5:'comparacao',6:'evolucao',7:'beneficios',8:'cupom',9:'oferta_entregas',10:'checkout'};
+
+  var currentStep = null, stepStart = Date.now(), scrollFired = {};
+  var chipCount = 0, checkoutClicked = false, leaveSent = false;
+
+  function track(name, params){
+    params = params || {};
+    params.transport_type = 'beacon';
+    if(window.__gaDebug) console.log('[GA4 evento]', name, params);
+    if(!window.__gaEnabled || typeof window.gtag !== 'function') return;
+    try{ window.gtag('event', name, params); }catch(e){}
+  }
+  window.track = track;
+
+  function stepName(n){ return STEP_NAMES[n] || ('etapa_' + n); }
+
+  /* 1) Visualização de cada etapa + saída com tempo na etapa */
+  function onStepChange(n){
+    var now = Date.now(), prev = currentStep;
+    if(prev !== null){
+      track('step_exit', {
+        step_number: prev, step_name: stepName(prev),
+        seconds_on_step: Math.round((now - stepStart) / 1000),
+        exit_type: n > prev ? 'forward' : 'back'
+      });
+    }
+    currentStep = n; stepStart = now; scrollFired = {}; leaveSent = false;
+    track('funnel_step_view', {
+      step_number: n, step_name: stepName(n),
+      previous_step: prev === null ? 0 : prev,
+      direction: prev === null ? 'start' : (n > prev ? 'forward' : 'back')
+    });
+    if(prev === 1 && n > 1) track('slide_unlock', {step_number: 1});
+  }
+
+  var steps = Array.prototype.slice.call(document.querySelectorAll('section.step[data-step]'));
+  var stepObserver = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      var el = m.target;
+      if(el.classList.contains('active')){
+        var n = parseInt(el.getAttribute('data-step'), 10);
+        if(n !== currentStep) onStepChange(n);
+      }
+    });
+  });
+  steps.forEach(function(s){ stepObserver.observe(s, {attributes: true, attributeFilter: ['class']}); });
+  var first = steps.filter(function(s){ return s.classList.contains('active'); })[0];
+  if(first) onStepChange(parseInt(first.getAttribute('data-step'), 10));
+
+  /* 2) Cliques: continuar, voltar, chat, cupom e checkout (fase de captura: dispara antes do redirecionamento) */
+  document.addEventListener('click', function(e){
+    var t = e.target && e.target.closest ? e.target.closest('button') : null;
+    if(!t) return;
+    var base = {step_number: currentStep, step_name: stepName(currentStep)};
+
+    if(t.id === 'checkout-btn'){
+      checkoutClicked = true;
+      track('begin_checkout', {
+        currency: CURRENCY, value: PRICE, coupon: 'fundador_85',
+        items: [{item_id: 'mindset-ia-mensal', item_name: 'Mindset IA - Plano Mensal', price: PRICE, quantity: 1, discount: +(OLD_PRICE - PRICE).toFixed(2)}]
+      });
+      return;
+    }
+    if(t.id === 'resgatar-btn'){
+      track('coupon_redeem', {step_number: currentStep, discount_percent: 85});
+      return;
+    }
+    if(t.classList.contains('chip')){
+      chipCount++;
+      track('chat_chip_select', {chip_text: t.textContent.trim(), chat_answer_number: chipCount});
+      return;
+    }
+    if(t.classList.contains('btn-back')){
+      track('click_back', base);
+      return;
+    }
+    if(/^to-step-/.test(t.id)){
+      base.button_id = t.id;
+      base.button_label = t.textContent.trim();
+      track('click_continue', base);
+    }
+  }, true);
+
+  /* 3) FAQ: qual pergunta foi aberta (roda depois do handler da página) */
+  document.addEventListener('click', function(e){
+    var q = e.target && e.target.closest ? e.target.closest('.faq-q') : null;
+    if(!q) return;
+    var item = q.closest('.faq-item');
+    if(item && item.classList.contains('open')){
+      track('faq_open', {question: (q.firstChild ? q.firstChild.textContent : q.textContent).trim()});
+    }
+  });
+
+  /* 4) Chat concluído (aparece o botão Continuar) */
+  var tb = document.getElementById('testimonial-block');
+  if(tb){
+    var chatDone = false;
+    new MutationObserver(function(){
+      if(!chatDone && tb.style.display && tb.style.display !== 'none'){
+        chatDone = true;
+        track('chat_complete', {chat_answers: chipCount});
+      }
+    }).observe(tb, {attributes: true, attributeFilter: ['style']});
+  }
+
+  /* 5) Carrossel de depoimentos: qual print o visitante parou pra ver */
+  var tt = document.getElementById('testi-track');
+  if(tt){
+    var lastIdx = -1, tmr;
+    tt.addEventListener('scroll', function(){
+      clearTimeout(tmr);
+      tmr = setTimeout(function(){
+        var idx = Math.round(tt.scrollLeft / tt.clientWidth);
+        if(idx !== lastIdx){
+          lastIdx = idx;
+          track('testimonial_slide_view', {slide_index: idx + 1, slides_total: tt.children.length});
+        }
+      }, 700);
+    }, {passive: true});
+  }
+
+  /* 6) Seções importantes que entraram na tela (1x por visita) */
+  var SECTIONS = [
+    ['.app-shots-grid', 'view_app_screens'],
+    ['.bonus-carousel-wrap', 'view_bonus_carousel'],
+    ['#testi-track', 'view_testimonials'],
+    ['.mono-plan', 'view_pricing'],
+    ['.guarantee-card', 'view_guarantee'],
+    ['.faq-item', 'view_faq']
+  ];
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          io.unobserve(en.target);
+          track(en.target.__gaEvent, {step_number: currentStep});
+        }
+      });
+    }, {threshold: 0.5});
+    SECTIONS.forEach(function(p){
+      var el = document.querySelector(p[0]);
+      if(el){ el.__gaEvent = p[1]; io.observe(el); }
+    });
+  }
+
+  /* 7) Profundidade de rolagem dentro de cada etapa */
+  window.addEventListener('scroll', function(){
+    var total = document.documentElement.scrollHeight - window.innerHeight;
+    if(total <= 0 || currentStep === null) return;
+    var pct = Math.round(window.scrollY / total * 100);
+    [50, 90].forEach(function(p){
+      if(pct >= p && !scrollFired[p]){
+        scrollFired[p] = true;
+        track('step_scroll', {step_number: currentStep, step_name: stepName(currentStep), percent_scrolled: p});
+      }
+    });
+  }, {passive: true});
+
+  /* 8) Saída da página: registra em qual etapa o visitante parou */
+  function leave(){
+    if(leaveSent || currentStep === null) return;
+    leaveSent = true;
+    track('step_exit', {
+      step_number: currentStep, step_name: stepName(currentStep),
+      seconds_on_step: Math.round((Date.now() - stepStart) / 1000),
+      exit_type: checkoutClicked ? 'checkout' : 'leave_page'
+    });
+  }
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'hidden') leave(); else leaveSent = false;
+  });
+  window.addEventListener('pagehide', leave);
+
+  /* 9) Tempo de carregamento da página (a página é pesada: mede quem pode estar desistindo antes de abrir) */
+  function sendLoad(){
+    var nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || null;
+    var secs = nav && nav.loadEventStart ? nav.loadEventStart / 1000 : performance.now() / 1000;
+    var p = {load_seconds: +secs.toFixed(1)};
+    if(nav && nav.transferSize) p.page_size_mb = +(nav.transferSize / 1048576).toFixed(1);
+    track('page_load_time', p);
+  }
+  if(document.readyState === 'complete') setTimeout(sendLoad, 0);
+  else window.addEventListener('load', function(){ setTimeout(sendLoad, 0); });
+
+  /* 10) Erros de JavaScript (avisa se algo quebrar pra algum visitante) */
+  var errCount = 0;
+  window.addEventListener('error', function(e){
+    if(errCount >= 5) return;
+    errCount++;
+    track('js_error', {
+      message: String(e.message || '').slice(0, 100),
+      source_file: String(e.filename || '').split('/').pop().slice(0, 60),
+      line: e.lineno || 0,
+      step_number: currentStep
+    });
+  });
+})();
+</script>
+<script>
+/* Pré-carrega as imagens das próximas etapas em segundo plano, uma por vez, sem atrapalhar a abertura */
+(function(){
+  function run(){
+    var seen = {}, list = [];
+    document.querySelectorAll('img[loading="lazy"]').forEach(function(img){
+      var s = img.getAttribute('src');
+      if(s && !seen[s]){ seen[s] = 1; list.push(s); }
+    });
+    var i = 0;
+    function next(){
+      if(i >= list.length) return;
+      var im = new Image();
+      im.onload = im.onerror = function(){ setTimeout(next, 120); };
+      im.src = list[i++];
+    }
+    next();
+  }
+  function go(){ setTimeout(run, 1500); }
+  if(document.readyState === 'complete') go(); else window.addEventListener('load', go);
+})();
+</script>
+</body>
+</html>
