@@ -364,6 +364,39 @@
   .faq-a p{padding:0 1.1em 1em; margin:0; color:var(--muted); font-size:.86rem}
   footer{margin-top:2.2rem; text-align:center; color:var(--muted); font-size:.78rem}
 </style>
+<!-- ===== Google Analytics 4 ===== -->
+<script>
+  /* >>> COLE AQUI o seu ID de métricas do GA4 (formato G-XXXXXXXXXX) <<< */
+  window.GA_MEASUREMENT_ID = 'G-XP0JTEY23L';
+</script>
+<script>
+(function(){
+  var ID = window.GA_MEASUREMENT_ID;
+  var debug = /[?&]ga_debug=1/.test(location.search);
+  window.__gaDebug = debug;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ window.dataLayer.push(arguments); };
+  window.__gaEnabled = /^G-[A-Z0-9]{6,}$/.test(ID) && ID !== 'G-XXXXXXXXXX';
+  if(!window.__gaEnabled){
+    console.warn('[GA4] ID de métricas ainda não configurado: nenhum evento está sendo enviado.');
+    return;
+  }
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
+  document.head.appendChild(s);
+  gtag('js', new Date());
+  var ua = navigator.userAgent || '';
+  var inApp = /Instagram/i.test(ua) ? 'instagram'
+            : /musical_ly|BytedanceWebview|TikTok/i.test(ua) ? 'tiktok'
+            : /FBAN|FBAV/i.test(ua) ? 'facebook'
+            : /WhatsApp/i.test(ua) ? 'whatsapp' : 'nenhum';
+  var conn = (navigator.connection && navigator.connection.effectiveType) || 'desconhecida';
+  var cfg = {in_app_browser: inApp, connection_type: conn};
+  if(debug) cfg.debug_mode = true;
+  gtag('config', ID, cfg);
+})();
+</script>
 </head>
 <body>
 
@@ -1054,6 +1087,208 @@
     var n = parseInt(hash,10);
     if(n && SEQ.indexOf(n)!==-1 && n!==1){ goToStep(n); }
   })();
+})();
+</script>
+<script>
+/* ===== Rastreamento de eventos do funil (GA4) ===== */
+(function(){
+  var PRICE = 24.90, OLD_PRICE = 166.00, CURRENCY = 'BRL';
+  var STEP_NAMES = {1:'abertura',2:'vsl',3:'prova_social',4:'mentor_chat',5:'comparacao',6:'evolucao',7:'beneficios',8:'cupom',9:'oferta_entregas',10:'checkout'};
+
+  var currentStep = null, stepStart = Date.now(), scrollFired = {};
+  var chipCount = 0, checkoutClicked = false, leaveSent = false;
+
+  function track(name, params){
+    params = params || {};
+    params.transport_type = 'beacon';
+    if(window.__gaDebug) console.log('[GA4 evento]', name, params);
+    if(!window.__gaEnabled || typeof window.gtag !== 'function') return;
+    try{ window.gtag('event', name, params); }catch(e){}
+  }
+  window.track = track;
+
+  function stepName(n){ return STEP_NAMES[n] || ('etapa_' + n); }
+
+  /* 1) Visualização de cada etapa + saída com tempo na etapa */
+  function onStepChange(n){
+    var now = Date.now(), prev = currentStep;
+    if(prev !== null){
+      track('step_exit', {
+        step_number: prev, step_name: stepName(prev),
+        seconds_on_step: Math.round((now - stepStart) / 1000),
+        exit_type: n > prev ? 'forward' : 'back'
+      });
+    }
+    currentStep = n; stepStart = now; scrollFired = {}; leaveSent = false;
+    track('funnel_step_view', {
+      step_number: n, step_name: stepName(n),
+      previous_step: prev === null ? 0 : prev,
+      direction: prev === null ? 'start' : (n > prev ? 'forward' : 'back')
+    });
+    if(prev === 1 && n > 1) track('slide_unlock', {step_number: 1});
+  }
+
+  var steps = Array.prototype.slice.call(document.querySelectorAll('section.step[data-step]'));
+  var stepObserver = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      var el = m.target;
+      if(el.classList.contains('active')){
+        var n = parseInt(el.getAttribute('data-step'), 10);
+        if(n !== currentStep) onStepChange(n);
+      }
+    });
+  });
+  steps.forEach(function(s){ stepObserver.observe(s, {attributes: true, attributeFilter: ['class']}); });
+  var first = steps.filter(function(s){ return s.classList.contains('active'); })[0];
+  if(first) onStepChange(parseInt(first.getAttribute('data-step'), 10));
+
+  /* 2) Cliques: continuar, voltar, chat, cupom e checkout (fase de captura: dispara antes do redirecionamento) */
+  document.addEventListener('click', function(e){
+    var t = e.target && e.target.closest ? e.target.closest('button') : null;
+    if(!t) return;
+    var base = {step_number: currentStep, step_name: stepName(currentStep)};
+
+    if(t.id === 'checkout-btn'){
+      checkoutClicked = true;
+      track('begin_checkout', {
+        currency: CURRENCY, value: PRICE, coupon: 'fundador_85',
+        items: [{item_id: 'mindset-ia-mensal', item_name: 'Mindset IA - Plano Mensal', price: PRICE, quantity: 1, discount: +(OLD_PRICE - PRICE).toFixed(2)}]
+      });
+      return;
+    }
+    if(t.id === 'resgatar-btn'){
+      track('coupon_redeem', {step_number: currentStep, discount_percent: 85});
+      return;
+    }
+    if(t.classList.contains('chip')){
+      chipCount++;
+      track('chat_chip_select', {chip_text: t.textContent.trim(), chat_answer_number: chipCount});
+      return;
+    }
+    if(t.classList.contains('btn-back')){
+      track('click_back', base);
+      return;
+    }
+    if(/^to-step-/.test(t.id)){
+      base.button_id = t.id;
+      base.button_label = t.textContent.trim();
+      track('click_continue', base);
+    }
+  }, true);
+
+  /* 3) FAQ: qual pergunta foi aberta (roda depois do handler da página) */
+  document.addEventListener('click', function(e){
+    var q = e.target && e.target.closest ? e.target.closest('.faq-q') : null;
+    if(!q) return;
+    var item = q.closest('.faq-item');
+    if(item && item.classList.contains('open')){
+      track('faq_open', {question: (q.firstChild ? q.firstChild.textContent : q.textContent).trim()});
+    }
+  });
+
+  /* 4) Chat concluído (aparece o botão Continuar) */
+  var tb = document.getElementById('testimonial-block');
+  if(tb){
+    var chatDone = false;
+    new MutationObserver(function(){
+      if(!chatDone && tb.style.display && tb.style.display !== 'none'){
+        chatDone = true;
+        track('chat_complete', {chat_answers: chipCount});
+      }
+    }).observe(tb, {attributes: true, attributeFilter: ['style']});
+  }
+
+  /* 5) Carrossel de depoimentos: qual print o visitante parou pra ver */
+  var tt = document.getElementById('testi-track');
+  if(tt){
+    var lastIdx = -1, tmr;
+    tt.addEventListener('scroll', function(){
+      clearTimeout(tmr);
+      tmr = setTimeout(function(){
+        var idx = Math.round(tt.scrollLeft / tt.clientWidth);
+        if(idx !== lastIdx){
+          lastIdx = idx;
+          track('testimonial_slide_view', {slide_index: idx + 1, slides_total: tt.children.length});
+        }
+      }, 700);
+    }, {passive: true});
+  }
+
+  /* 6) Seções importantes que entraram na tela (1x por visita) */
+  var SECTIONS = [
+    ['.app-shots-grid', 'view_app_screens'],
+    ['.bonus-carousel-wrap', 'view_bonus_carousel'],
+    ['#testi-track', 'view_testimonials'],
+    ['.mono-plan', 'view_pricing'],
+    ['.guarantee-card', 'view_guarantee'],
+    ['.faq-item', 'view_faq']
+  ];
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          io.unobserve(en.target);
+          track(en.target.__gaEvent, {step_number: currentStep});
+        }
+      });
+    }, {threshold: 0.5});
+    SECTIONS.forEach(function(p){
+      var el = document.querySelector(p[0]);
+      if(el){ el.__gaEvent = p[1]; io.observe(el); }
+    });
+  }
+
+  /* 7) Profundidade de rolagem dentro de cada etapa */
+  window.addEventListener('scroll', function(){
+    var total = document.documentElement.scrollHeight - window.innerHeight;
+    if(total <= 0 || currentStep === null) return;
+    var pct = Math.round(window.scrollY / total * 100);
+    [50, 90].forEach(function(p){
+      if(pct >= p && !scrollFired[p]){
+        scrollFired[p] = true;
+        track('step_scroll', {step_number: currentStep, step_name: stepName(currentStep), percent_scrolled: p});
+      }
+    });
+  }, {passive: true});
+
+  /* 8) Saída da página: registra em qual etapa o visitante parou */
+  function leave(){
+    if(leaveSent || currentStep === null) return;
+    leaveSent = true;
+    track('step_exit', {
+      step_number: currentStep, step_name: stepName(currentStep),
+      seconds_on_step: Math.round((Date.now() - stepStart) / 1000),
+      exit_type: checkoutClicked ? 'checkout' : 'leave_page'
+    });
+  }
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'hidden') leave(); else leaveSent = false;
+  });
+  window.addEventListener('pagehide', leave);
+
+  /* 9) Tempo de carregamento da página (a página é pesada: mede quem pode estar desistindo antes de abrir) */
+  function sendLoad(){
+    var nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || null;
+    var secs = nav && nav.loadEventStart ? nav.loadEventStart / 1000 : performance.now() / 1000;
+    var p = {load_seconds: +secs.toFixed(1)};
+    if(nav && nav.transferSize) p.page_size_mb = +(nav.transferSize / 1048576).toFixed(1);
+    track('page_load_time', p);
+  }
+  if(document.readyState === 'complete') setTimeout(sendLoad, 0);
+  else window.addEventListener('load', function(){ setTimeout(sendLoad, 0); });
+
+  /* 10) Erros de JavaScript (avisa se algo quebrar pra algum visitante) */
+  var errCount = 0;
+  window.addEventListener('error', function(e){
+    if(errCount >= 5) return;
+    errCount++;
+    track('js_error', {
+      message: String(e.message || '').slice(0, 100),
+      source_file: String(e.filename || '').split('/').pop().slice(0, 60),
+      line: e.lineno || 0,
+      step_number: currentStep
+    });
+  });
 })();
 </script>
 </body>
