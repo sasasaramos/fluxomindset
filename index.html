@@ -334,6 +334,15 @@
   .delivery-list li{ padding:.9em 1.1em; border-radius:var(--radius-sm); background:var(--card); border:1px solid var(--border); border-left:3px solid var(--primary); font-size:.92rem; font-weight:500 }
   .bonus-price{ color:#ff4d4d; text-decoration:line-through; text-decoration-thickness:2px; font-weight:700 }
 
+  /* Âncora de valor do entregável principal (etapa 9) */
+  .main-anchor{ margin-top:1.4rem; padding:1.1rem 1.2rem; border-radius:var(--radius-sm); background:var(--card); border:1px solid var(--border); border-left:3px solid var(--primary); text-align:center }
+  .main-anchor .tag{ font-family:var(--font-data); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted) }
+  .main-anchor h3{ font-size:1.05rem; margin:.4em 0 .3em; color:var(--fg) }
+  .main-anchor p{ color:var(--muted); font-size:.86rem; margin:0 }
+  .main-anchor .ma-price{ margin-top:.8rem; font-family:var(--font-data); font-weight:800; font-size:1.7rem; color:var(--fg); line-height:1.1 }
+  .main-anchor .ma-note{ margin-top:.6rem; font-size:.8rem }
+  .main-anchor .ma-price small{ display:block; margin-bottom:.25rem; font-size:.72rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--muted) }
+
   /* ===== ETAPA 10 ===== */
   .mono-plan{margin-top:1.5rem; padding:1.6rem 1.4rem; border-radius:var(--radius); border:1px solid var(--border); background:linear-gradient(160deg, var(--card-2), var(--card)); text-align:center; box-shadow:var(--shadow-card)}
   .mono-plan .plan-name{font-size:.85rem; color:var(--primary-light); text-transform:uppercase; letter-spacing:.08em; font-family:var(--font-data); font-weight:700}
@@ -343,6 +352,8 @@
   .mono-plan .plan-price span{font-size:1rem; color:var(--muted); font-weight:500}
   .plan-pills{display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin-top:1rem}
   .p-pill{border:1px solid var(--border); color:var(--fg); font-size:.78rem; font-weight:600; padding:.5em 1.1em; border-radius:99px; display:inline-flex; align-items:center; gap:.4em}
+  .bonus-value-pill{ display:inline-flex; align-items:center; gap:.5em; margin-bottom:1rem; padding:.45em 1.1em; border-radius:99px; background:rgba(255,77,77,0.08); border:1px solid rgba(255,77,77,0.3); font-family:var(--font-data); font-size:.85rem; color:var(--muted) }
+  .bonus-value-pill .free{ color:var(--success); font-weight:700 }
   .plan-divider{height:1px; background:var(--border); margin:1.3rem 0}
   .plan-inc-label{font-family:var(--font-data); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:.9rem}
   .plan-inc-list{list-style:none; margin:0; padding:0; display:inline-flex; flex-direction:column; align-items:flex-start; gap:.7rem; text-align:left}
@@ -674,7 +685,22 @@
         <img alt="Tela do mentor Mindset IA" loading="lazy" src="img/app-mindset-ia.webp" width="640" height="800" decoding="async">
         <img class="shot-full"  alt="Tela de Dashboard do app Mindset IA" loading="lazy" src="img/app-dashboard.webp" width="900" height="1125" decoding="async">
       </div>
-      <p class="sub" style="margin-top:1.4rem; font-weight:600; text-align:center">E ainda leva de bônus:</p>
+      <div class="main-anchor">
+        <span class="tag">Entregável principal</span>
+        <h3>Sistema completo de Rotina com Mentor IA 24h</h3>
+        <p>Planejamento, metas, hábitos, Dashboard e histórico de progresso, tudo em um único app.</p>
+        <div class="ma-price"><small>Valor do sistema</small>R$257,57</div>
+        <div class="discount-badge">🔥 85% de desconto ainda não aplicado 🔥</div>
+        <p class="ma-note">Seu desconto de 85% será aplicado na próxima etapa.</p>
+      </div>
+      <h2 style="font-size:clamp(1.3rem,4.5vw,1.9rem); margin-top:1.6rem">E ainda leva de bônus:</h2>
+      <div class="main-anchor">
+        <span class="tag">Bônus inclusos</span>
+        <h3>4 bônus exclusivos para turbinar sua rotina</h3>
+        <p>Treino personalizado, controle financeiro, bem-estar, perfil, conquistas, leitura e biblioteca.</p>
+        <div class="ma-price"><small>Valor total em bônus</small><span class="bonus-price">R$947,40</span></div>
+        <p class="ma-note">Hoje inclusos sem custo extra.</p>
+      </div>
       <div class="bonus-carousel-wrap">
         <div class="bonus-carousel-track">
           <figure class="bonus-item"><img alt="Bônus: Treino personalizado" loading="lazy" src="img/bonus-treino.webp" width="640" height="800" decoding="async"><figcaption><span class="bn-name">Treino personalizado</span><span class="bn-price bonus-price">R$157,90</span></figcaption></figure>
@@ -687,7 +713,6 @@
           <figure class="bonus-item" aria-hidden="true"><img alt="Bônus: Perfil, Conquistas, Leitura e Biblioteca" loading="lazy" src="img/bonus-extras.webp" width="640" height="800" decoding="async"><figcaption><span class="bn-name">Perfil, Conquistas, Leitura e Biblioteca</span><span class="bn-price bonus-price">R$453,70</span></figcaption></figure>
         </div>
       </div>
-      <p class="sub" style="margin-top:1rem">Valor total em bônus: <b class="bonus-price">R$947,40</b> — hoje inclusos sem custo extra.</p>
       <button class="btn btn-primary btn-block" id="to-step-10" style="margin-top:1.5rem">Continuar →</button>
       <button class="btn btn-back btn-block" type="button">← Voltar</button>
     </div>
@@ -702,10 +727,10 @@
       <p class="sub">Sua Rotina em Fluxo está pronta. Garanta seu acesso ao Mindset IA agora mesmo.</p>
 
       <div class="mono-plan">
-        <div class="plan-name">Mensal</div>
+        <div class="plan-name">Acesso completo</div>
         <div class="discount-badge">🔥 85% de desconto 🔥</div>
-        <div class="plan-oldprice">R$166,00/mês</div>
-        <div class="plan-price">R$24,90 <span>/mês</span></div>
+        <div class="plan-oldprice">R$257,57</div>
+        <div class="plan-price">R$37,90 <span>à vista</span></div>
         <div class="plan-pills">
           <span class="p-pill">🛡️ 7 dias de garantia</span>
           <span class="p-pill">🔒 Compra 100% segura</span>
@@ -720,7 +745,8 @@
           <li><span class="chk">✓</span>Gráficos, estatísticas e insights</li>
           <li><span class="chk">✓</span>Suporte prioritário</li>
         </ul>
-        <div class="plan-inc-label" style="margin-top:1rem">+ De bônus (R$947,40 em valor)</div>
+        <div class="plan-inc-label" style="margin-top:1rem; margin-bottom:.6rem">+ De bônus</div>
+        <div class="bonus-value-pill">Valor: <span class="bonus-price">R$947,40</span> <span class="free">grátis hoje</span></div>
         <ul class="plan-inc-list">
           <li><span class="chk">✓</span>Treino personalizado com mapa muscular</li>
           <li><span class="chk">✓</span>Financeiro com o método Divisão Magnata</li>
@@ -750,12 +776,12 @@
       <div class="faq-section">
         <h3>Perguntas frequentes</h3>
         <div class="faq-item">
-          <button class="faq-q">Posso cancelar quando quiser?<span class="plus">+</span></button>
-          <div class="faq-a"><p>Sim, 100%. Você cancela a qualquer momento, sem multa e sem burocracia. Nenhuma pergunta, nenhuma complicação.</p></div>
+          <button class="faq-q">Posso desistir depois de comprar?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Sim, 100%. Você tem 7 dias de garantia incondicional: se não gostar, devolvemos o valor pago, sem multa e sem burocracia. Nenhuma pergunta, nenhuma complicação.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q">Por que vale a pena assinar agora?<span class="plus">+</span></button>
-          <div class="faq-a"><p>Porque o preço atual de R$24,90/mês é promocional de lançamento e pode aumentar a qualquer momento. Quanto antes você começar, mais cedo vai ver resultados reais, e mais tempo aproveita pelo menor preço. Sem fidelidade, cancela quando quiser.</p></div>
+          <button class="faq-q">Por que vale a pena entrar agora?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Porque o preço atual de R$37,90 à vista é promocional de lançamento e pode aumentar a qualquer momento. Quanto antes você começar, mais cedo vai ver resultados reais, e mais tempo aproveita pelo menor preço. E você ainda conta com 7 dias de garantia incondicional.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q">Como vou receber meu acesso ao app?<span class="plus">+</span></button>
@@ -1093,7 +1119,7 @@
 <script>
 /* ===== Rastreamento de eventos do funil (GA4) ===== */
 (function(){
-  var PRICE = 24.90, OLD_PRICE = 166.00, CURRENCY = 'BRL';
+  var PRICE = 37.90, OLD_PRICE = 257.57, CURRENCY = 'BRL';
   var STEP_NAMES = {1:'abertura',2:'vsl',3:'prova_social',4:'mentor_chat',5:'comparacao',6:'evolucao',7:'beneficios',8:'cupom',9:'oferta_entregas',10:'checkout'};
 
   var currentStep = null, stepStart = Date.now(), scrollFired = {};
@@ -1153,7 +1179,7 @@
       checkoutClicked = true;
       track('begin_checkout', {
         currency: CURRENCY, value: PRICE, coupon: 'fundador_85',
-        items: [{item_id: 'mindset-ia-mensal', item_name: 'Mindset IA - Plano Mensal', price: PRICE, quantity: 1, discount: +(OLD_PRICE - PRICE).toFixed(2)}]
+        items: [{item_id: 'mindset-ia', item_name: 'Mindset IA - Acesso completo', price: PRICE, quantity: 1, discount: +(OLD_PRICE - PRICE).toFixed(2)}]
       });
       return;
     }
