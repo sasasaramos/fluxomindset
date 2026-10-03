@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <title>Compra Concluída com Sucesso</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Sora:wght@700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #000000;
+        --card: #0b0f14;
+        --blue: #60a5fa;
+        --blue-light: rgba(96,165,250,0.10);
+        --blue-mid: rgba(96,165,250,0.32);
+        --green: #4ade80;
+        --green-light: rgba(74,222,128,0.10);
+        --green-mid: rgba(74,222,128,0.32);
+        --text: #f8fafc;
+        --text-soft: #b6bfcc;
+        --text-muted: #8e99a8;
+        --text-faint: #7a8494;
+        --border: rgba(255,255,255,0.10);
+        --border-soft: rgba(255,255,255,0.06);
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.6);
+        --shadow-md: 0 8px 28px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.02);
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { width: 100%; height: 100%; overflow-x: hidden; }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 16px;
+        background-color: var(--bg);
+        background-image:
+          radial-gradient(ellipse 80% 50% at 50% -10%, rgba(96,165,250,0.14) 0%, transparent 70%),
+          linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size: 100% 100%, 44px 44px, 44px 44px;
+        color: var(--text);
+        font-family: "DM Sans", system-ui, sans-serif;
+      }
+
+      .page {
+        width: 100%;
+        max-width: 420px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      /* BADGE */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--blue-light);
+        border: 1px solid var(--blue-mid);
+        color: var(--blue);
+        font-size: 11.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        border-radius: 9999px;
+        padding: 5px 14px;
+        margin-bottom: 22px;
+        animation: fadeDown 0.5s ease-out both;
+      }
+
+      .badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 9999px;
+        background: var(--blue);
+        animation: blink 1.8s ease-in-out infinite;
+      }
+
+      /* SUCCESS ICON */
+      .icon-wrap {
+        position: relative;
+        margin-bottom: 20px;
+        animation: scaleIn 0.5s cubic-bezier(.34,1.56,.64,1) 0.1s both;
+      }
+
+      .icon-glow {
+        position: absolute;
+        inset: -12px;
+        border-radius: 9999px;
+        background: radial-gradient(circle, rgba(74,222,128,0.25) 0%, transparent 70%);
+        animation: pulseGlow 2.2s ease-in-out 0.6s infinite;
+        z-index: 0;
+      }
+
+      .icon-ring {
+        width: 80px;
+        height: 80px;
+        border-radius: 9999px;
+        background: var(--green-light);
+        border: 2px solid var(--green-mid);
+        display: grid;
+        place-items: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .icon-ring svg {
+        width: 34px;
+        height: 34px;
+        stroke: var(--green);
+        stroke-width: 2.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        stroke-dasharray: 50;
+        stroke-dashoffset: 0;
+        animation: drawCheck 0.45s ease-out 0.5s both;
+      }
+
+      /* HEADING */
+      h1 {
+        font-family: "Sora", system-ui, sans-serif;
+        font-weight: 800;
+        font-size: clamp(22px, 6vw, 27px);
+        line-height: 1.2;
+        letter-spacing: -0.03em;
+        text-align: center;
+        color: var(--text);
+        margin-bottom: 10px;
+        animation: fadeUp 0.5s ease-out 0.2s both;
+      }
+
+      .subtitle {
+        font-size: 14.5px;
+        font-weight: 400;
+        color: var(--text-soft);
+        line-height: 1.55;
+        text-align: center;
+        max-width: 36ch;
+        margin-bottom: 26px;
+        animation: fadeUp 0.5s ease-out 0.3s both;
+      }
+
+      /* MAIN CARD */
+      .card {
+        width: 100%;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 22px;
+        box-shadow: var(--shadow-md);
+        animation: fadeUp 0.5s ease-out 0.4s both;
+        margin-bottom: 14px;
+      }
+
+      .card-label {
+        font-size: 10.5px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--blue);
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+
+      .card-label::before {
+        content: '';
+        display: inline-block;
+        width: 14px;
+        height: 2px;
+        background: var(--blue);
+        border-radius: 2px;
+      }
+
+      .channel-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .channel-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+      }
+
+      .channel-icon.email {
+        background: var(--blue-light);
+        border: 1px solid var(--blue-mid);
+        color: var(--blue);
+      }
+
+      .channel-icon.whatsapp {
+        background: var(--green-light);
+        border: 1px solid var(--green-mid);
+        color: var(--green);
+      }
+
+      .channel-icon svg {
+        width: 17px;
+        height: 17px;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .channel-info { flex: 1; padding-top: 3px; }
+
+      .channel-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 3px;
+      }
+
+      .channel-desc {
+        font-size: 12.5px;
+        line-height: 1.45;
+        color: var(--text-muted);
+      }
+
+      .channel-sep {
+        border: 0;
+        border-top: 1px solid var(--border-soft);
+        margin: 16px 0;
+      }
+
+      /* TRUST PILLS */
+      .trust-row {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        animation: fadeUp 0.5s ease-out 0.5s both;
+        margin-bottom: 18px;
+      }
+
+      .trust-pill {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        padding: 12px 8px;
+        text-align: center;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .trust-icon {
+        font-size: 20px;
+        margin-bottom: 6px;
+        display: block;
+      }
+
+      .trust-text {
+        font-size: 10.5px;
+        font-weight: 500;
+        color: var(--text-soft);
+        line-height: 1.35;
+      }
+
+      .trust-text strong {
+        display: block;
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 1px;
+      }
+
+      /* FOOTER */
+      .footer {
+        font-size: 11px;
+        color: var(--text-faint);
+        text-align: center;
+        animation: fadeUp 0.5s ease-out 0.6s both;
+      }
+
+      /* KEYFRAMES */
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes fadeDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.6); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.25; }
+      }
+
+      @keyframes pulseGlow {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.2); opacity: 0.4; }
+      }
+
+      @keyframes drawCheck {
+        from { stroke-dashoffset: 50; }
+        to   { stroke-dashoffset: 0; }
+      }
+    </style>
+    <!-- ===== GA4: registro de compra ===== -->
+<meta name="robots" content="noindex, nofollow">
+<script>
+(function(){
+  var ID = 'G-XP0JTEY23L';          // mesmo ID do funil (propriedade "Fluxo mindset")
+  var VALUE = 37.90;                // preço da oferta
+  var CURRENCY = 'BRL';
+
+  var qs = new URLSearchParams(location.search);
+  var debug = qs.get('ga_debug') === '1';
+
+  function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+
+  /* 1) ID da transação: usa o que o checkout mandar na URL, se mandar */
+  var KEYS = ['transaction_id','order_id','sale_id','orderId','pedido','venda','id'];
+  var tid = null;
+  for(var i = 0; i < KEYS.length; i++){
+    var v = qs.get(KEYS[i]);
+    if(v){ tid = String(v); break; }
+  }
+
+  /* 2) Sem ID na URL: gera um e reaproveita por 24h, para o F5 não duplicar a venda */
+  if(!tid){
+    var saved = null;
+    try{ saved = JSON.parse(get('mindset_tid') || 'null'); }catch(e){}
+    if(saved && saved.id && (Date.now() - saved.ts) < 86400000){
+      tid = saved.id;
+    } else {
+      tid = 'web-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+      set('mindset_tid', JSON.stringify({ id: tid, ts: Date.now() }));
+    }
+  }
+
+  /* 3) Se essa compra já foi enviada neste navegador, não envia de novo (modo teste ignora) */
+  if(!debug && get('mindset_purchase_sent') === tid) return;
+
+  /* 4) Carrega o GA4 (se a página ainda não carregou) */
+  window.dataLayer = window.dataLayer || [];
+  if(typeof window.gtag !== 'function'){
+    window.gtag = function(){ window.dataLayer.push(arguments); };
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
+    document.head.appendChild(s);
+    gtag('js', new Date());
+    var cfg = {};
+    if(debug) cfg.debug_mode = true;
+    gtag('config', ID, cfg);
+  }
+
+  /* 5) Envia a compra. No modo teste (?ga_debug=1) vai como "purchase_test",
+        para não entrar na sua receita real */
+  gtag('event', debug ? 'purchase_test' : 'purchase', {
+    transaction_id: tid,
+    value: VALUE,
+    currency: CURRENCY,
+    items: [{
+      item_id: 'mindset_ia',
+      item_name: 'Mindset IA',
+      price: VALUE,
+      quantity: 1
+    }]
+  });
+
+  if(!debug) set('mindset_purchase_sent', tid);
+})();
+</script>
+  </head>
+  <body>
+    <main class="page">
+
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Pagamento aprovado
+      </div>
+
+      <div class="icon-wrap" aria-hidden="true">
+        <div class="icon-glow"></div>
+        <div class="icon-ring">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+        </div>
+      </div>
+
+      <h1>Compra Concluída<br>com Sucesso! 🎉</h1>
+
+      <p class="subtitle">
+        Seu acesso já foi liberado. Verifique seu e-mail e WhatsApp para começar agora mesmo.
+      </p>
+
+      <article class="card">
+        <p class="card-label">Onde você vai receber seu acesso</p>
+
+        <div class="channel-item">
+          <div class="channel-icon email" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="5" width="18" height="14" rx="3" />
+              <path d="M5.5 8.2 12 13l6.5-4.8" />
+            </svg>
+          </div>
+          <div class="channel-info">
+            <p class="channel-name">E-mail</p>
+            <p class="channel-desc">Enviamos os dados de acesso para o seu e-mail. Verifique também a caixa de spam.</p>
+          </div>
+        </div>
+
+        <hr class="channel-sep" />
+
+        <div class="channel-item">
+          <div class="channel-icon whatsapp" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M20 12a8 8 0 0 1-11.74 7.05L4 20l1.05-4.26A8 8 0 1 1 20 12Z" />
+            </svg>
+          </div>
+          <div class="channel-info">
+            <p class="channel-name">WhatsApp</p>
+            <p class="channel-desc">Nossa equipe vai te enviar o link de acesso pelo WhatsApp em instantes.</p>
+          </div>
+        </div>
+      </article>
+
+      <div class="trust-row" aria-label="Diferenciais">
+        <div class="trust-pill">
+          <span class="trust-icon">⚡</span>
+          <span class="trust-text"><strong>Imediato</strong>Acesso na hora</span>
+        </div>
+        <div class="trust-pill">
+          <span class="trust-icon">👥</span>
+          <span class="trust-text"><strong>+4.900</strong>usuários ativos</span>
+        </div>
+        <div class="trust-pill">
+          <span class="trust-icon">🔒</span>
+          <span class="trust-text"><strong>Seguro</strong>Dados protegidos</span>
+        </div>
+      </div>
+
+      <p class="footer">© 2026 · Todos os direitos reservados</p>
+
+    </main>
+  </body>
+</html>
