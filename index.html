@@ -128,17 +128,6 @@
   #step-1 .sub{color:var(--muted); font-size:1.05rem; margin-top:.75rem}
   .credibility{ margin-top:1.5rem; padding:.9rem 1.1rem; border-radius:var(--radius-sm); background:rgba(255,255,255,0.06); border:1px dashed rgba(255,255,255,0.3); color:var(--muted); font-size:.85rem; text-align:center }
 
-  .slide-track{ position:relative; margin-top:2rem; height:62px; border-radius:99px; background:var(--card-2); border:1px solid var(--border); display:flex; align-items:center; padding:0 5px; user-select:none; overflow:hidden }
-  .slide-track .slide-label{ position:absolute; left:0; right:0; text-align:center; font-weight:600; color:var(--fg); letter-spacing:.02em; font-size:.95rem; pointer-events:none }
-  .slide-thumb{ position:relative; z-index:2; width:52px; height:52px; border-radius:50%; background:var(--gradient-flow); display:flex; align-items:center; justify-content:center; cursor:grab; touch-action:none; box-shadow:0 6px 18px -6px rgba(255,255,255,0.6) }
-  .slide-thumb:active{cursor:grabbing}
-  .slide-thumb svg{width:22px; height:22px}
-  .slide-fill{ position:absolute; left:0; top:0; bottom:0; width:0; border-radius:99px; background:linear-gradient(90deg, rgba(255,255,255,0.28), rgba(255,255,255,0.06)) }
-  .swipe-hint{ margin-top:.9rem; font-family:var(--font-data); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted) }
-  .swipe-hint .chev{display:inline-block; animation:chevPulse 1.4s ease-in-out infinite}
-  .swipe-hint .chev:nth-child(2){animation-delay:.15s}
-  .swipe-hint .chev:nth-child(3){animation-delay:.3s}
-  @keyframes chevPulse{0%,100%{opacity:.3; transform:translateX(0)}50%{opacity:1; transform:translateX(3px)}}
 
   /* ===== ETAPA 2: video em tela cheia ===== */
   #step-2{padding:0; position:fixed; inset:0; z-index:2; align-items:stretch}
@@ -424,14 +413,7 @@
       <p class="sub">Pessoas que viviam esquecendo compromisso, adiando hábito e sem noção nenhuma do próprio progresso, organizaram a rotina inteira em poucos dias, mesmo com a agenda cheia.</p>
       <div class="credibility">Aqui você não vai ver ator pago, promessa mirabolante ou depoimento fajuto.</div>
 
-      <div class="slide-track" id="slide-track">
-        <div class="slide-fill" id="slide-fill"></div>
-        <span class="slide-label" id="slide-label">Iniciar Agora</span>
-        <div class="slide-thumb" id="slide-thumb" role="button" tabindex="0" aria-label="Arraste para continuar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#14181b" stroke-width="2.4" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
-        </div>
-      </div>
-      <div class="swipe-hint">DESLIZE PARA INICIAR <span class="chev">›</span><span class="chev">›</span><span class="chev">›</span></div>
+      <button class="btn btn-primary btn-block" id="btn-start" type="button" style="margin-top:2rem">Iniciar Agora →</button>
     </div>
   </section>
 
@@ -846,47 +828,15 @@
     btn.addEventListener('click', goToPrevStep);
   });
 
-  /* ETAPA 1: slide to unlock -> vai pra pagina da VSL */
-  var resetSlideUnlock = function(){};
+  /* ETAPA 1: botao de um clique -> vai pra pagina da VSL */
   (function(){
-    var track = document.getElementById('slide-track');
-    var thumb = document.getElementById('slide-thumb');
-    var fill = document.getElementById('slide-fill');
-    var label = document.getElementById('slide-label');
-    var dragging = false, startX = 0, maxX = 0, unlocked = false;
-
-    function trackMetrics(){ maxX = track.clientWidth - thumb.clientWidth - 10; }
-    trackMetrics();
-    window.addEventListener('resize', trackMetrics);
-
-    function setThumb(x){
-      x = Math.max(0, Math.min(maxX, x));
-      thumb.style.transform = 'translateX('+x+'px)';
-      fill.style.width = (x + thumb.clientWidth) + 'px';
-      return x;
-    }
-    function unlock(){
-      if(unlocked) return; unlocked = true;
-      setThumb(maxX); label.textContent = 'Destravado';
-      setTimeout(function(){ goToStep(3); }, 400);
-    }
-    function onDown(e){ if(unlocked) return; dragging = true; startX = (e.touches?e.touches[0].clientX:e.clientX) - (thumb.getBoundingClientRect().left - track.getBoundingClientRect().left); }
-    function onMove(e){ if(!dragging||unlocked) return; var clientX = e.touches?e.touches[0].clientX:e.clientX; setThumb(clientX - track.getBoundingClientRect().left - startX); }
-    function onUp(){ if(!dragging||unlocked) return; dragging=false; var cx = thumb.getBoundingClientRect().left - track.getBoundingClientRect().left; if(cx > maxX*0.8){ unlock(); } else { setThumb(0); } }
-
-    thumb.addEventListener('pointerdown', onDown);
-    window.addEventListener('pointermove', onMove);
-    window.addEventListener('pointerup', onUp);
-    thumb.addEventListener('touchstart', onDown, {passive:true});
-    window.addEventListener('touchmove', onMove, {passive:true});
-    window.addEventListener('touchend', onUp);
-    thumb.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); unlock(); } });
-
-    resetSlideUnlock = function(){
-      dragging = false; unlocked = false;
-      trackMetrics(); setThumb(0);
-      label.textContent = 'Deslize para destravar';
-    };
+    var btn = document.getElementById('btn-start');
+    var clicked = false;
+    btn.addEventListener('click', function(){
+      if(clicked) return; clicked = true;
+      goToStep(3);
+    });
+    window.resetStartButton = function(){ clicked = false; };
   })();
 
   /* ETAPA 2: video do YouTube, carregado só ao clicar */
@@ -1095,7 +1045,7 @@
   })();
 
   function runStepEnter(n){
-    if(n===1) resetSlideUnlock();
+    if(n===1 && window.resetStartButton) window.resetStartButton();
     if(n===3) runStep3Stats();
     if(n===4) runChat();
     if(n===6){ runChart(); runStep6Stats(); }
